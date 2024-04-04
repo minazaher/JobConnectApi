@@ -132,3 +132,8 @@ D:\Projects\.Net\JobConnectApi\JobConnectApi\obj\Debug\net8.0\JobConnectApi.genr
 D:\Projects\.Net\JobConnectApi\JobConnectApi\obj\Debug\net8.0\ref\JobConnectApi.dll
 D:\Projects\.Net\JobConnectApi\JobConnectApi\bin\Debug\net8.0\JobConnectApi.staticwebassets.runtime.json
 D:\Projects\.Net\JobConnectApi\JobConnectApi\bin\Debug\net8.0\BCrypt.Net-Next.dll
+D:\Projects\.Net\JobConnectApi\JobConnectApi\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+D:\Projects\.Net\JobConnectApi\JobConnectApi\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\Projects\.Net\JobConnectApi\JobConnectApi\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+D:\Projects\.Net\JobConnectApi\JobConnectApi\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+D:\Projects\.Net\JobConnectApi\JobConnectApi\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll

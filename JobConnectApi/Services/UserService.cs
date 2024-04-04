@@ -8,9 +8,10 @@ using static ErrorOr.Result;
 
 namespace JobConnectApi.Services;
 
-public class UserService(DatabaseContext database) : IUserService
+public class UserService(DatabaseContext database, IJwtService jwtService) : IUserService
 {
     private readonly DatabaseContext _database = database;
+    private IJwtService _jwtService = jwtService;
 
 
     public ErrorOr<Created> Register(User user)
@@ -39,7 +40,7 @@ public class UserService(DatabaseContext database) : IUserService
         }
 
         // 4. Login successful (replace with token generation logic)
-        var token = "your_generated_token"; 
+        var token = jwtService.GenerateToken(user.UserId, user.FirstName, user.LastName); 
         return new LoginResponse { Successful = true, Token = token };
     }
 

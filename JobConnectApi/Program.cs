@@ -19,6 +19,7 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddSwaggerGen();
     builder.Services.AddControllers();
     builder.Services.AddScoped<IUserService, UserService>();
+    builder.Services.AddScoped<IJwtService, JwtService>();
     builder.Services.AddDbContext<DatabaseContext>(options =>
         options.UseSqlite("Data Source=JobConnect.db"));
     

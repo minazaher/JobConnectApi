@@ -8,20 +8,44 @@ using static ErrorOr.Result;
 
 namespace JobConnectApi.Services;
 
-public class UserService(DatabaseContext database, IJwtService jwtService) : IUserService
+public class UserService
 {
-    private readonly DatabaseContext _database = database;
-    private IJwtService _jwtService = jwtService;
+    private readonly DatabaseContext _database;
+    private readonly IJwtService _jwtService;
+    private readonly UserManager<IdentityUser> _userManager;
 
-
-    public ErrorOr<Created> Register(User user)
+    public UserService(DatabaseContext database, IJwtService jwtService, UserManager<IdentityUser> userManager)
     {
-        user.Password = HashPassword(user.Password);
-        _database.Add(user);
-        database.SaveChanges();
-        return Result.Created;
+        _database = database;
+        _jwtService = jwtService;
+        _userManager = userManager;
     }
 
+    public async Task<ErrorOr<Created>> Register(RegisterRequest registerRequest)
+    {
+        var hashedPassword = HashPassword(registerRequest.Password);
+        var user = new IdentityUser
+        {
+            UserName = registerRequest.UserName,
+            Email = registerRequest.Email,
+        };
+        var result = await _userManager.CreateAsync(user, hashedPassword);
+        if (result.Succeeded)
+        {
+            await _userManager.AddToRoleAsync(user,
+                registerRequest.Role); // Potential Error, Solution: Create Roles First
+            return Result.Created;
+        }
+
+        foreach (var error in result.Errors)
+        {
+            Console.WriteLine(error.Description);
+        }
+
+        return Error.Failure();
+    }
+
+/*
     public async Task<LoginResponse> Login(LoginRequest request)
     {
         // 1. Check user existence
@@ -40,7 +64,7 @@ public class UserService(DatabaseContext database, IJwtService jwtService) : IUs
         }
 
         // 4. Login successful (replace with token generation logic)
-        var token = jwtService.GenerateToken(user.UserId, user.FirstName, user.LastName); 
+        var token = jwtService.GenerateToken(user.UserId, user.FirstName, user.LastName);
         return new LoginResponse { Successful = true, Token = token };
     }
 
@@ -49,18 +73,19 @@ public class UserService(DatabaseContext database, IJwtService jwtService) : IUs
         return BCrypt.Net.BCrypt.Verify(plainTextPassword, hashedPassword);
     }
 
-    private String HashPassword(string password)
-    {
-        return BCrypt.Net.BCrypt.HashPassword(password);
-    }
 
     private bool UserExists(string email) // Example usage (adapt based on your needs)
     {
         return _database.Users.Any(u => u.Email == email);
     }
 
-    private async Task<User?> GetUserByEmail(string email) // Example usage (adapt based on your needs)
+    private async Task<IdentityUser?> GetUserByEmail(string email) // Example usage (adapt based on your needs)
     {
         return await _database.Users.FirstOrDefaultAsync(u => u.Email == email);
+    }
+    */
+    private String HashPassword(string password)
+    {
+        return BCrypt.Net.BCrypt.HashPassword(password);
     }
 }

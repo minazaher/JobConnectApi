@@ -137,3 +137,12 @@ D:\Projects\.Net\JobConnectApi\JobConnectApi\bin\Debug\net8.0\Microsoft.Identity
 D:\Projects\.Net\JobConnectApi\JobConnectApi\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
 D:\Projects\.Net\JobConnectApi\JobConnectApi\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
 D:\Projects\.Net\JobConnectApi\JobConnectApi\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+D:\Projects\.Net\JobConnectApi\JobConnectApi\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\Projects\.Net\JobConnectApi\JobConnectApi\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+D:\Projects\.Net\JobConnectApi\JobConnectApi\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\Projects\.Net\JobConnectApi\JobConnectApi\bin\Debug\net8.0\Microsoft.Owin.dll
+D:\Projects\.Net\JobConnectApi\JobConnectApi\bin\Debug\net8.0\Microsoft.Owin.Security.dll
+D:\Projects\.Net\JobConnectApi\JobConnectApi\bin\Debug\net8.0\Microsoft.Owin.Security.Jwt.dll
+D:\Projects\.Net\JobConnectApi\JobConnectApi\bin\Debug\net8.0\Microsoft.Owin.Security.OAuth.dll
+D:\Projects\.Net\JobConnectApi\JobConnectApi\bin\Debug\net8.0\Newtonsoft.Json.dll
+D:\Projects\.Net\JobConnectApi\JobConnectApi\bin\Debug\net8.0\Owin.dll

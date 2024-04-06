@@ -7,20 +7,24 @@ using RegisterRequest = JobConnectApi.DTOs.RegisterRequest;
 namespace JobConnectApi.Controllers;
 
 [Controller]
-public class UserController(IUserService userService) : ControllerBase
+public class UserController : ControllerBase
 {
-    private readonly IUserService _userService = userService;
+    private readonly UserService _userService;
+
+    public UserController(UserService userService)
+    {
+        _userService = userService;
+    }
 
     [HttpPost]
     [Route("register")]
-    public IActionResult Register([FromBody] RegisterRequest request)
+    public async Task<CreatedAtActionResult> Register([FromBody] RegisterRequest request)
     {
-        
-        var user = new User(request.Email, request.Password, request.UserType, request.FirstName, request.LastName);
-        userService.Register(user);
-        return CreatedAtAction(actionName: nameof(Register), value: user);
+        await _userService.Register(request);
+        return CreatedAtAction(actionName: nameof(Register), value: request);
     }
     
+    /*
     [HttpPost]
     [Route("login")]
     public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
@@ -38,5 +42,5 @@ public class UserController(IUserService userService) : ControllerBase
 
         return Unauthorized(response.Message);
     }
-    
+    */
 }

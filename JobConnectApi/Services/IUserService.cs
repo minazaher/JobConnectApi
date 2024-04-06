@@ -7,6 +7,6 @@ namespace JobConnectApi.Services;
 
 public interface IUserService
 {
-    public ErrorOr<Created> Register(User user);
-    public Task<LoginResponse> Login(LoginRequest loginRequest);
+    public Task<ErrorOr<Created>> Register(RegisterRequest user);
+  //  public Task<LoginResponse> Login(LoginRequest loginRequest);
 }

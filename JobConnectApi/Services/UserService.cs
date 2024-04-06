@@ -23,13 +23,12 @@ public class UserService
 
     public async Task<ErrorOr<Created>> Register(RegisterRequest registerRequest)
     {
-        var hashedPassword = HashPassword(registerRequest.Password);
         var user = new IdentityUser
         {
             UserName = registerRequest.UserName,
             Email = registerRequest.Email,
         };
-        var result = await _userManager.CreateAsync(user, hashedPassword);
+        var result = await _userManager.CreateAsync(user, registerRequest.Password);
         if (result.Succeeded)
         {
             await _userManager.AddToRoleAsync(user,
@@ -45,26 +44,29 @@ public class UserService
         return Error.Failure();
     }
 
-/*
+
     public async Task<LoginResponse> Login(LoginRequest request)
     {
-        // 1. Check user existence
-        if (!UserExists(request.Email)) // Call user existence check method
+        // 1. Check user existence using UserManager
+        var user = await _userManager.FindByEmailAsync(request.Email);
+        if (user == null)
         {
             return new LoginResponse { Successful = false, Message = "User not found." };
         }
 
-        // 2. Retrieve the user from the database
-        var user = await GetUserByEmail(request.Email); // Call user retrieval method
-
-        // 3. Verify password (replace with your actual implementation)
-        if (!VerifyPassword(request.Password, user.Password)) // Implement secure password verification
+        // 2. Verify password using UserManager's secure implementation
+        var result = await _userManager.CheckPasswordAsync(user, request.Password);
+        var roles = await _userManager.GetRolesAsync(user);
+        Console.WriteLine(roles.FirstOrDefault());
+        
+        
+        if (!result)
         {
             return new LoginResponse { Successful = false, Message = "Invalid password." };
         }
 
-        // 4. Login successful (replace with token generation logic)
-        var token = jwtService.GenerateToken(user.UserId, user.FirstName, user.LastName);
+        // 3. Login successful (replace with token generation logic)
+        var token = _jwtService.GenerateToken(user.Id, user.UserName!, "Admin");
         return new LoginResponse { Successful = true, Token = token };
     }
 
@@ -72,8 +74,7 @@ public class UserService
     {
         return BCrypt.Net.BCrypt.Verify(plainTextPassword, hashedPassword);
     }
-
-
+    
     private bool UserExists(string email) // Example usage (adapt based on your needs)
     {
         return _database.Users.Any(u => u.Email == email);
@@ -83,7 +84,7 @@ public class UserService
     {
         return await _database.Users.FirstOrDefaultAsync(u => u.Email == email);
     }
-    */
+
     private String HashPassword(string password)
     {
         return BCrypt.Net.BCrypt.HashPassword(password);

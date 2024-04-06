@@ -23,8 +23,6 @@ public class UserController : ControllerBase
         await _userService.Register(request);
         return CreatedAtAction(actionName: nameof(Register), value: request);
     }
-    
-    /*
     [HttpPost]
     [Route("login")]
     public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
@@ -42,5 +40,5 @@ public class UserController : ControllerBase
 
         return Unauthorized(response.Message);
     }
-    */
+    
 }

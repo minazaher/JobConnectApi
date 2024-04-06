@@ -9,7 +9,7 @@ using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegiste
 
 public class JwtService: IJwtService
 {
-    public string GenerateToken(Guid userId, string firstName, string role)
+    public string GenerateToken(string userId, string firstName, string role)
     {
         var signingCredentials =
             new SigningCredentials(

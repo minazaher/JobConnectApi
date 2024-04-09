@@ -41,8 +41,7 @@ var builder = WebApplication.CreateBuilder(args);
     });
 
 
-    builder.Services.AddDbContext<DatabaseContext>(options =>
-        options.UseSqlite("Data Source=JobConnect.db"));
+    builder.Services.AddDbContext<DatabaseContext>();
     
 }
 

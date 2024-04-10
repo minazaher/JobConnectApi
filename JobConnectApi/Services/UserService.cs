@@ -35,13 +35,10 @@ public class UserService
                 registerRequest.Role); // Potential Error, Solution: Create Roles First
             return Result.Created;
         }
-
-        foreach (var error in result.Errors)
-        {
-            Console.WriteLine(error.Description);
-        }
-
-        return Error.Failure();
+        
+        var error = result.Errors.FirstOrDefault();
+        
+        return Error.Failure(code:error.Code, description:error.Description);
     }
 
 
@@ -54,13 +51,13 @@ public class UserService
             return new LoginResponse { Successful = false, Message = "User not found." };
         }
 
-        // 2. Verify password using UserManager's secure implementation
-        var result = await _userManager.CheckPasswordAsync(user, request.Password);
+        // 2. Verify password using UserManager
+        var passwordCheckResult = await _userManager.CheckPasswordAsync(user, request.Password);
         var roles = await _userManager.GetRolesAsync(user);
         Console.WriteLine(roles.FirstOrDefault());
         
         
-        if (!result)
+        if (!passwordCheckResult)
         {
             return new LoginResponse { Successful = false, Message = "Invalid password." };
         }

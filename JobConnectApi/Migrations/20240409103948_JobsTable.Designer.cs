@@ -3,6 +3,7 @@ using System;
 using JobConnectApi.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JobConnectApi.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20240409103948_JobsTable")]
+    partial class JobsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,47 +28,17 @@ namespace JobConnectApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("AcceptedBy")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<string>("AdminId")
                         .HasColumnType("varchar(255)");
 
-                    b.Property<string>("EmployerId")
-                        .IsRequired()
+                    b.Property<string>("EmployerId1")
                         .HasColumnType("varchar(255)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<string>("JobDescription")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("JobTitle")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("JobType")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("PostDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<decimal?>("Salray")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("longtext");
 
                     b.HasKey("JobId");
 
                     b.HasIndex("AdminId");
 
-                    b.HasIndex("EmployerId");
+                    b.HasIndex("EmployerId1");
 
                     b.ToTable("Jobs");
                 });
@@ -270,9 +243,7 @@ namespace JobConnectApi.Migrations
 
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Employer")
                         .WithMany()
-                        .HasForeignKey("EmployerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("EmployerId1");
 
                     b.Navigation("Admin");
 

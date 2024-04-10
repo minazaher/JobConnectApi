@@ -7,6 +7,9 @@ namespace JobConnectApi.Database;
 
 public class DatabaseContext : IdentityDbContext<IdentityUser>
 {
+    
+    public DbSet<Job> Jobs { get; set; }
+
     public DatabaseContext(DbContextOptions options) : base(options)
     {
     }

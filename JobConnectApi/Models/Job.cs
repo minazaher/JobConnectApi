@@ -1,24 +1,37 @@
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace JobConnectApi.Models;
 
+[PrimaryKey("JobId")]
 public class Job
 {
+    [Column]
     public int JobId { get; set; }
-    public int EmployerId { get; set; }
+    [ForeignKey("EmployerId")]
+    [Column]
+    public string EmployerId { get; set; } // fk referencing the employer that posted the job, (One to One relation)
+    [Column]
     public string JobTitle { get; set; }
-    public string JobType { get; set; }
-    public decimal? JobBudget { get; set; } // Budget can be nullable
+    [Column]
+    public string JobType { get; set; } // Part-time, Full-Time, Contract
+    [Column]
+    public decimal? Salray { get; set; } // Budget can be nullable
+    [Column]
     public DateTime PostDate { get; set; }
+    [Column]
     public string JobDescription { get; set; }
-    public bool IsActive { get; set; } = true;
-    public int NumProposals { get; set; }
+    [Column]
+    public string Status { get; set; } = "Pending"; // Pending - Accepted
+    [ForeignKey("AdminId")]
+    [Column]
+    public string AcceptedBy { get; set; }  // fk referencing the admin that accepted the job post, (One to One relation)
+    [Column]
+    public bool IsActive { get; set; }
     
-    // Foreign key
-    public User Employer { get; set; } // Navigation property referencing Users(UserId)
-
-    // Navigation properties for relationships
-    public ICollection<Proposal> Proposals { get; set; } // One-to-Many with Proposals
-    public ICollection<SavedJob> SavedJobs { get; set; } // Many-to-Many with Users (through SavedJobs)
-    
+    // This allows easier access to user information
+    public virtual IdentityUser Employer { get; set; }
+    public virtual IdentityUser Admin { get; set; }  
 }
+

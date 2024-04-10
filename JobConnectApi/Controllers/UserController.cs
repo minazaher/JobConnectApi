@@ -22,49 +22,32 @@ public class UserController : ControllerBase
     [Route("register")]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
 
         var registerResult = await _userService.Register(request); // Assuming this returns ErrorOr<Unit>
 
         return registerResult.Match(
             _ => CreatedAtAction(nameof(Register), request), // Success
-            error =>
-            {
-                // Log the error for debugging
-                error.ForEach(err => Console.WriteLine("errors from main" + err.Description));
-
-                // Return an appropriate HTTP response based on the error
-                return TranslateToHttpResponse(error);
-            });
+            TranslateToHttpResponse);
     }
 
     [HttpPost]
     [Route("login")]
     public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
-
         var response = await _userService.Login(loginRequest);
         if (response.Successful)
         {
             return Ok(response);
         }
 
-        return Unauthorized(response.Message);
+        return BadRequest(response);
     }
 
 
     private IActionResult TranslateToHttpResponse(List<Error> errors)
     {
         var firstError = errors[0];
-        var errorsString = string.Join(Environment.NewLine, errors.Select(Selector));
-        Console.WriteLine(errorsString);
+        Console.WriteLine("error returned is : " + errors[0]);
         
         var statusCode = firstError.Type switch
         {
@@ -73,11 +56,7 @@ public class UserController : ControllerBase
             ErrorType.Validation => StatusCodes.Status400BadRequest,
             _ => StatusCodes.Status500InternalServerError
         };
-        return Problem(statusCode: statusCode, title: errorsString);
+        return Problem(statusCode: statusCode, title: firstError.Description);
     }
-
-    private string Selector(Error error)
-    {
-        return error.ToString();
-    }
+    
 }

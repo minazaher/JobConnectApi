@@ -23,7 +23,7 @@ public class Job
     [Column]
     public string JobDescription { get; set; }
     [Column]
-    public string Status { get; set; } = "Pending"; // Pending - Accepted
+    public JobStatus Status { get; set; } = JobStatus.Accepted; // Pending - Accepted
     [ForeignKey("AdminId")]
     [Column]
     public string AcceptedBy { get; set; }  // fk referencing the admin that accepted the job post, (One to One relation)

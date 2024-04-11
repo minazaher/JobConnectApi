@@ -53,17 +53,17 @@ public class UserService
 
         // 2. Verify password using UserManager
         var passwordCheckResult = await _userManager.CheckPasswordAsync(user, request.Password);
-        var roles = await _userManager.GetRolesAsync(user);
-        Console.WriteLine(roles.FirstOrDefault());
-        
         
         if (!passwordCheckResult)
         {
             return new LoginResponse { Successful = false, Message = "Invalid password." };
         }
+        var roles = await _userManager.GetRolesAsync(user);
+        Console.WriteLine("User Role IS : \n");
+        Console.WriteLine(roles[0]);        
 
         // 3. Login successful (replace with token generation logic)
-        var token = _jwtService.GenerateToken(user.Id, user.UserName!, "Admin");
+        var token = _jwtService.GenerateToken(user.Id, user.UserName!, roles[0]);
         return new LoginResponse { Successful = true, Token = token };
     }
 

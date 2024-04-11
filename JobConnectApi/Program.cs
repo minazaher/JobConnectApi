@@ -6,7 +6,7 @@ using JobConnectApi.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Owin.Security.Jwt;
@@ -29,19 +29,27 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddControllers();
     builder.Services.AddScoped<UserService>();
     builder.Services.AddScoped<IJwtService, JwtService>();
+    builder.Services.AddDbContext<DatabaseContext>();
     builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
             ValidateAudience = false,
-            ValidateIssuer = false,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("U2NEQATDmLMd+REgxyvSnKqZPzj2o31yQWskSAk+4JDTUtNhHN9WrzWhfwlMVS6n\n"))
+            ValidateIssuer = true,
+            ValidIssuer = "jobConnect",
+            IssuerSigningKey =   new SymmetricSecurityKey(Encoding.UTF8.GetBytes("super-secret-key-super-secret-key")),
+            
         };
+    });
+    builder.Services.AddAuthorization(auth =>
+    {
+        auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+            .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
+            .RequireAuthenticatedUser().Build());
     });
 
 
-    builder.Services.AddDbContext<DatabaseContext>();
     
 }
 
@@ -58,24 +66,14 @@ if (app.Environment.IsDevelopment())
 }
 
 {
+
     // Other app configuration (error handling, HTTPS redirection, etc.)
     app.UseExceptionHandler("/error");
     app.UseHttpsRedirection();
     app.UseCors("AllowAnyOrigin"); // Apply policy globally
-    app.UseAuthorization();
     app.MapControllers();
-    using (var scope = app.Services.CreateScope())
-    {
-        var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-        var roles = new[] { "Admin", "Employer", "JobSeeker" };
-        foreach (var role in roles)
-        {
-            if (!await roleManager.RoleExistsAsync(role))
-            {
-                await roleManager.CreateAsync(new IdentityRole(role));
-            }
-        }
-    }
+    app.UseAuthorization();
+    app.UseAuthentication();
     app.Run();
 
 

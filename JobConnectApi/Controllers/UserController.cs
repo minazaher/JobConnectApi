@@ -3,6 +3,7 @@ using JobConnectApi.DTOs;
 using JobConnectApi.Models;
 using JobConnectApi.Services;
 using JobConnectApi.Services.ErrorService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RegisterRequest = JobConnectApi.DTOs.RegisterRequest;
 
@@ -43,6 +44,7 @@ public class UserController : ControllerBase
         return BadRequest(response);
     }
 
+    
 
     private IActionResult TranslateToHttpResponse(List<Error> errors)
     {

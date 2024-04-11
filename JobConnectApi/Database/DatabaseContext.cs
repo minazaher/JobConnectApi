@@ -9,6 +9,7 @@ public class DatabaseContext : IdentityDbContext<IdentityUser>
 {
     
     public DbSet<Job> Jobs { get; set; }
+    // public DbSet<Employer> Employers { get; set; }
 
     public DatabaseContext(DbContextOptions options) : base(options)
     {
@@ -22,5 +23,8 @@ public class DatabaseContext : IdentityDbContext<IdentityUser>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        // base.OnModelCreating(modelBuilder);
+        // modelBuilder.Entity<Job>()
+        //     .HasKey(job => job.JobId);
     }
 }

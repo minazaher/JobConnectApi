@@ -23,9 +23,9 @@ public class UserController : ControllerBase
     [Route("register")]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request)
     {
+        Console.Write(request);
 
         var registerResult = await _userService.Register(request); // Assuming this returns ErrorOr<Unit>
-
         return registerResult.Match(
             _ => CreatedAtAction(nameof(Register), request), // Success
             TranslateToHttpResponse);

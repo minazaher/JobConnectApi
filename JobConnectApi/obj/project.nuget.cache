@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "+KQ+cVK5XcNED2X1vYsHSQib+Rt9NWVVodTV7Al/isX6ecU90Bm7X2Bfue6Z46vnbb8PaYf3ZS1CQQ/aukvSUQ==",
+  "dgSpecHash": "KSlXpOjpE39z+4x31jvlcK3Ootbyo/sH2BGFJJhc2T0G8bnfVPy10jo17vsILhX0bzoEJNGglNSwjpMWQnkvPw==",
   "success": true,
   "projectFilePath": "D:\\Projects\\.Net\\JobConnectApi\\JobConnectApi\\JobConnectApi.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Lenovo\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\Lenovo\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\Lenovo\\.nuget\\packages\\bouncycastle.cryptography\\2.2.1\\bouncycastle.cryptography.2.2.1.nupkg.sha512",
     "C:\\Users\\Lenovo\\.nuget\\packages\\erroror\\2.0.1\\erroror.2.0.1.nupkg.sha512",

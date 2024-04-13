@@ -9,7 +9,7 @@ public class Employer: IdentityUser
     public required string Industry { get; set; }
     
     // Navigation property for one-to-many relationship with Post
-    public virtual ICollection<Job> PostedPosts { get; set; }
+    public virtual List<Job> PostedPosts { get; set; }
     
     
 }

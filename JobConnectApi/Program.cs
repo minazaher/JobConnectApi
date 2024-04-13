@@ -1,5 +1,6 @@
 using System.Text;
 using JobConnectApi.Database;
+using JobConnectApi.Mapper;
 using JobConnectApi.Middleware;
 using JobConnectApi.Models;
 using JobConnectApi.Services;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using AutoMapper;
 using Microsoft.Owin.Security.Jwt;
 using AuthenticationMiddleware = JobConnectApi.Middleware.AuthenticationMiddleware;
 
@@ -29,6 +31,10 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddControllers();
     builder.Services.AddScoped<UserService>();
     builder.Services.AddScoped<IJwtService, JwtService>();
+    builder.Services.AddScoped<IJobService, JobService>();
+    builder.Services.AddAutoMapper(typeof(JobMappingProfile));
+
+
     builder.Services.AddDbContext<DatabaseContext>();
     builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
     {
@@ -72,9 +78,22 @@ if (app.Environment.IsDevelopment())
     app.UseHttpsRedirection();
     app.UseCors("AllowAnyOrigin"); // Apply policy globally
     app.MapControllers();
-    app.UseAuthorization();
     app.UseAuthentication();
+    app.UseAuthorization();
+
+    using (var scope = app.Services.CreateScope())
+    {
+        // Create roles first (ensure migrations are applied)
+        var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+        var roles = new[] { "Admin", "Employer", "JobSeeker" };
+        foreach (var role in roles)
+        {
+            if (!await roleManager.RoleExistsAsync(role))
+            {
+                await roleManager.CreateAsync(new IdentityRole(role));
+            }
+        }
+    }
+
     app.Run();
-
-
 }

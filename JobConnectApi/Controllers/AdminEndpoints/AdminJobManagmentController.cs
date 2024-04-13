@@ -18,7 +18,7 @@ public class AdminJobManagementController(
 {
     // POST /admin/jobs/accept?jobId={id}: Accept a job post 
     [HttpPost("/accept")]
-    public async void AcceptJobPost([FromQuery] int jobId)
+    public async void AcceptJobPost([FromQuery] int jobId) // TODO: Error Handling
     {
         Job job = await jobService.GetJobById(jobId);
         var userId = User.Claims.FirstOrDefault()?.Value;
@@ -32,12 +32,28 @@ public class AdminJobManagementController(
 
         await databaseContext.SaveChangesAsync();
     }
-    
+
     // GET /admin/jobs: Get a list of all job posts.
     [HttpGet]
-    public async Task<List<Job>> GetAllJobs()
+    public List<Job> GetAllJobs() // TODO: Error Handling 
     {
         List<Job> jobs = jobService.FindAll();
         return jobs;
+    }
+
+    // GET /admin/jobs/waiting Get details of a specific job post.
+    [HttpGet("waiting")]
+    public List<Job> GetWaitingList() // TODO: Error Handling 
+    {
+        List<Job> jobs = jobService.GetJobsWaitingList();
+        return jobs;
+    }
+
+    // GET /admin/jobs/jobId Get details of a specific job post.
+    [HttpGet("{jobId}")]
+    public async Task<Job> FindJobById([FromRoute] int jobId) // TODO: Error Handling 
+    {
+        Job job = await jobService.GetJobById(jobId);
+        return job;
     }
 }

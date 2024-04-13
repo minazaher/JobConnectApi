@@ -26,12 +26,12 @@ public class Job
     public JobStatus Status { get; set; } = JobStatus.Pending; // Pending - Accepted
     [ForeignKey("AdminId")]
     [Column]
-    public string? AcceptedBy { get; set; }  // fk referencing the admin that accepted the job post, (One to One relation)
+    public string? AdminId { get; set; }  // fk referencing the admin that accepted the job post, (One to One relation)
     [Column]
     public bool IsActive { get; set; }
     
     // This allows easier access to user information
-    public virtual IdentityUser Employer { get; set; }
+    public virtual IdentityUser? Employer { get; set; }
     public virtual IdentityUser? Admin { get; set; }  
 }
 

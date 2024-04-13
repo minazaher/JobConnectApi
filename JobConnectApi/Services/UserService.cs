@@ -13,6 +13,8 @@ public class UserService
     private readonly DatabaseContext _database;
     private readonly IJwtService _jwtService;
     private readonly UserManager<IdentityUser> _userManager;
+    private const string RoleAdmin = "Admin";
+    private const string RoleEmployer = "Employer";
 
     public UserService(DatabaseContext database, IJwtService jwtService, UserManager<IdentityUser> userManager)
     {
@@ -23,11 +25,27 @@ public class UserService
 
     public async Task<ErrorOr<Created>> Register(RegisterRequest registerRequest)
     {
-        var user = new IdentityUser
+        IdentityUser user;
+        switch (registerRequest.Role)
         {
-            UserName = registerRequest.UserName,
-            Email = registerRequest.Email,
-        };
+            case RoleAdmin:
+                user = new IdentityUser(); //TODO: To be replaced by Admin Model
+                break;
+            case RoleEmployer:
+                user = new Employer
+                {
+                    CompanyName = registerRequest.Company,
+                    Industry = registerRequest.Industry
+                };
+                break;
+            default:
+                user = new IdentityUser();
+                break;
+        }
+
+        user.UserName = registerRequest.UserName;
+        user.Email = registerRequest.Email;
+
         var result = await _userManager.CreateAsync(user, registerRequest.Password);
         if (result.Succeeded)
         {
@@ -35,10 +53,10 @@ public class UserService
                 registerRequest.Role); // Potential Error, Solution: Create Roles First
             return Result.Created;
         }
-        
+
         var error = result.Errors.FirstOrDefault();
-        
-        return Error.Failure(code:error.Code, description:error.Description);
+
+        return Error.Failure(code: error.Code, description: error.Description);
     }
 
 
@@ -53,14 +71,15 @@ public class UserService
 
         // 2. Verify password using UserManager
         var passwordCheckResult = await _userManager.CheckPasswordAsync(user, request.Password);
-        
+
         if (!passwordCheckResult)
         {
             return new LoginResponse { Successful = false, Message = "Invalid password." };
         }
+
         var roles = await _userManager.GetRolesAsync(user);
         Console.WriteLine("User Role IS : \n");
-        Console.WriteLine(roles[0]);        
+        Console.WriteLine(roles[0]);
 
         // 3. Login successful (replace with token generation logic)
         var token = _jwtService.GenerateToken(user.Id, user.UserName!, roles[0]);
@@ -71,7 +90,7 @@ public class UserService
     {
         return BCrypt.Net.BCrypt.Verify(plainTextPassword, hashedPassword);
     }
-    
+
     private bool UserExists(string email) // Example usage (adapt based on your needs)
     {
         return _database.Users.Any(u => u.Email == email);

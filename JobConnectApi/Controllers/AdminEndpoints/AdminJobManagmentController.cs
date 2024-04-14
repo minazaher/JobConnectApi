@@ -16,6 +16,7 @@ public class AdminJobManagementController(
     DatabaseContext databaseContext)
     : ControllerBase
 {
+    
     // POST /admin/jobs/accept?jobId={id}: Accept a job post 
     [HttpPost("/accept")]
     public async void AcceptJobPost([FromQuery] int jobId) // TODO: Error Handling

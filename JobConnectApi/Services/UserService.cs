@@ -86,6 +86,14 @@ public class UserService
         return new LoginResponse { Successful = true, Token = token };
     }
 
+    public async Task<List<Job>> GetEmployerJobs(string id)
+    {
+        Employer? employer = (Employer)(await _userManager.FindByIdAsync(id))!;
+
+        var jobs = employer.PostedPosts;
+        return jobs;
+    }
+
     private bool VerifyPassword(string plainTextPassword, string hashedPassword)
     {
         return BCrypt.Net.BCrypt.Verify(plainTextPassword, hashedPassword);

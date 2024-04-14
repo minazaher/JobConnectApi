@@ -4,7 +4,7 @@ using JobConnectApi.Models;
 
 namespace JobConnectApi.Services;
 
-public class JobService: IJobService
+public class JobService : IJobService
 {
     private readonly DatabaseContext _databaseContext;
 
@@ -19,7 +19,7 @@ public class JobService: IJobService
         _databaseContext.SaveChanges();
         return Result.Created;
     }
-    
+
     public async Task<Job> GetJobById(int id)
     {
         Job job = (await _databaseContext.Jobs.FindAsync(id))!;
@@ -28,13 +28,21 @@ public class JobService: IJobService
 
     public List<Job> FindAll()
     {
-        var jobs = _databaseContext.Jobs.ToList();  // Fetch all jobs as a list
+        var jobs = _databaseContext.Jobs.ToList(); // Fetch all jobs as a list
         return jobs;
     }
 
     public List<Job> GetJobsWaitingList()
     {
-        var jobs = _databaseContext.Jobs.ToList().FindAll(j=> j.Status == 0);  // Fetch all jobs as a list
+        var jobs = _databaseContext.Jobs.ToList().FindAll(j => j.Status == 0); // Fetch all jobs as a list
+        return jobs;
+    }
+
+    public List<Job> FindByEmployerId(string employerId)
+    {
+        var jobs = _databaseContext
+            .Jobs.ToList()
+            .FindAll(j => j.EmployerId == employerId);
         return jobs;
     }
 }

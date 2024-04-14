@@ -14,12 +14,12 @@ namespace JobConnectApi.Controllers.EmployerEndpoints;
 public class JobManagementController(
     IJobService jobService,
     UserManager<IdentityUser> userManager,
+    UserService userService,
     DatabaseContext databaseContext)
     : ControllerBase
 {
- 
     [HttpPost]
-    public async void PostJob([FromBody]JobRequest j)
+    public async void PostJob([FromBody] JobRequest j)
     {
         Job job = new Job
         {
@@ -32,7 +32,7 @@ public class JobManagementController(
             Status = JobStatus.Pending,
             IsActive = true
         };
-        
+
         var userId = User.Claims.FirstOrDefault()?.Value;
         if (userId != null)
         {
@@ -45,5 +45,13 @@ public class JobManagementController(
 
         jobService.CreateJob(job);
     }
-    
+
+    [HttpGet]
+    public List<Job> GetEmployerJobs()
+    {
+        var userId = User.Claims.FirstOrDefault()?.Value;
+
+        var jobs = jobService.FindByEmployerId(userId!);
+        return jobs;
+    }
 }

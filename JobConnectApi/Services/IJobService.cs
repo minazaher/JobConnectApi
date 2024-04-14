@@ -9,4 +9,5 @@ public interface IJobService
     Task<Job> GetJobById(int id);
     List<Job> FindAll();
     List<Job> GetJobsWaitingList();
+    List<Job>  FindByEmployerId(string employerId);
 }

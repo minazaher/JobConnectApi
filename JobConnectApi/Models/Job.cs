@@ -31,7 +31,17 @@ public class Job
     public bool IsActive { get; set; }
     
     // This allows easier access to user information
-    public virtual IdentityUser? Employer { get; set; }
+    public virtual Employer? Employer { get; set; }
     public virtual IdentityUser? Admin { get; set; }  
+    
+    // List of JobSeekers That applied to this job
+    public virtual List<JobSeeker>? Applicants { get; set; }
+    
+    // List of JobSeekers That Saved this job
+    public virtual List<JobSeeker>? SavedBy { get; set; }
+    
+    // List of JobSeekers Of Proposals that have been submitted to this job 
+    public virtual List<Proposal>? Proposals { get; set; }
+
 }
 

@@ -3,6 +3,7 @@ using System;
 using JobConnectApi.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JobConnectApi.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20240415151350_JobSeekerRelationsAdded")]
+    partial class JobSeekerRelationsAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.3");
@@ -27,6 +30,9 @@ namespace JobConnectApi.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("EmployerId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("EmployerId1")
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("IsActive")
@@ -59,6 +65,8 @@ namespace JobConnectApi.Migrations
 
                     b.HasIndex("EmployerId");
 
+                    b.HasIndex("EmployerId1");
+
                     b.ToTable("Jobs");
                 });
 
@@ -78,8 +86,14 @@ namespace JobConnectApi.Migrations
                     b.Property<int>("JobId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("JobId1")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("JobSeekerId")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("JobSeekerId1")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Status")
@@ -93,7 +107,11 @@ namespace JobConnectApi.Migrations
 
                     b.HasIndex("JobId");
 
+                    b.HasIndex("JobId1");
+
                     b.HasIndex("JobSeekerId");
+
+                    b.HasIndex("JobSeekerId1");
 
                     b.ToTable("Proposals");
                 });
@@ -103,29 +121,59 @@ namespace JobConnectApi.Migrations
                     b.Property<string>("ApplicantsId")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("AppliedJobsJobId")
+                    b.Property<int>("JobId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("ApplicantsId", "AppliedJobsJobId");
+                    b.HasKey("ApplicantsId", "JobId");
 
-                    b.HasIndex("AppliedJobsJobId");
+                    b.HasIndex("JobId");
 
                     b.ToTable("JobJobSeeker");
                 });
 
             modelBuilder.Entity("JobJobSeeker1", b =>
                 {
+                    b.Property<int>("Job1JobId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("SavedById")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Job1JobId", "SavedById");
+
+                    b.HasIndex("SavedById");
+
+                    b.ToTable("JobJobSeeker1");
+                });
+
+            modelBuilder.Entity("JobJobSeeker2", b =>
+                {
+                    b.Property<int>("AppliedJobsJobId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("JobSeekerId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("AppliedJobsJobId", "JobSeekerId");
+
+                    b.HasIndex("JobSeekerId");
+
+                    b.ToTable("JobJobSeeker2");
+                });
+
+            modelBuilder.Entity("JobJobSeeker3", b =>
+                {
+                    b.Property<string>("JobSeeker1Id")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("SavedJobsJobId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("SavedById", "SavedJobsJobId");
+                    b.HasKey("JobSeeker1Id", "SavedJobsJobId");
 
                     b.HasIndex("SavedJobsJobId");
 
-                    b.ToTable("JobJobSeeker1");
+                    b.ToTable("JobJobSeeker3");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -358,8 +406,12 @@ namespace JobConnectApi.Migrations
                         .HasForeignKey("AdminId");
 
                     b.HasOne("JobConnectApi.Models.Employer", "Employer")
-                        .WithMany("PostedPosts")
+                        .WithMany()
                         .HasForeignKey("EmployerId");
+
+                    b.HasOne("JobConnectApi.Models.Employer", null)
+                        .WithMany("PostedPosts")
+                        .HasForeignKey("EmployerId1");
 
                     b.Navigation("Admin");
 
@@ -369,16 +421,24 @@ namespace JobConnectApi.Migrations
             modelBuilder.Entity("JobConnectApi.Models.Proposal", b =>
                 {
                     b.HasOne("JobConnectApi.Models.Job", "Job")
-                        .WithMany("Proposals")
+                        .WithMany()
                         .HasForeignKey("JobId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("JobConnectApi.Models.JobSeeker", "JobSeeker")
+                    b.HasOne("JobConnectApi.Models.Job", null)
                         .WithMany("Proposals")
+                        .HasForeignKey("JobId1");
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "JobSeeker")
+                        .WithMany()
                         .HasForeignKey("JobSeekerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("JobConnectApi.Models.JobSeeker", null)
+                        .WithMany("Proposals")
+                        .HasForeignKey("JobSeekerId1");
 
                     b.Navigation("Job");
 
@@ -395,16 +455,46 @@ namespace JobConnectApi.Migrations
 
                     b.HasOne("JobConnectApi.Models.Job", null)
                         .WithMany()
-                        .HasForeignKey("AppliedJobsJobId")
+                        .HasForeignKey("JobId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("JobJobSeeker1", b =>
                 {
+                    b.HasOne("JobConnectApi.Models.Job", null)
+                        .WithMany()
+                        .HasForeignKey("Job1JobId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("JobConnectApi.Models.JobSeeker", null)
                         .WithMany()
                         .HasForeignKey("SavedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("JobJobSeeker2", b =>
+                {
+                    b.HasOne("JobConnectApi.Models.Job", null)
+                        .WithMany()
+                        .HasForeignKey("AppliedJobsJobId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("JobConnectApi.Models.JobSeeker", null)
+                        .WithMany()
+                        .HasForeignKey("JobSeekerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("JobJobSeeker3", b =>
+                {
+                    b.HasOne("JobConnectApi.Models.JobSeeker", null)
+                        .WithMany()
+                        .HasForeignKey("JobSeeker1Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

@@ -34,10 +34,16 @@ public class JobService : IJobService
 
     public List<Job> GetJobsWaitingList()
     {
-        var jobs = _databaseContext.Jobs.ToList().FindAll(j => j.Status == 0); // Fetch all jobs as a list
+        var jobs = _databaseContext.Jobs.ToList().FindAll(j => j.Status == JobStatus.Pending); // Fetch all applicable jobs
         return jobs;
     }
 
+    public List<Job> GetActiveJobs()
+    {
+        var jobs = _databaseContext.Jobs.ToList().FindAll(j => j.Status == JobStatus.Accepted & !j.IsActive); // Fetch all jobs as a list
+        return jobs;
+    }
+    
     public List<Job> FindByEmployerId(string employerId)
     {
         var jobs = _databaseContext

@@ -11,7 +11,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using AutoMapper;
+using Microsoft.OpenApi.Models;
 using Microsoft.Owin.Security.Jwt;
+using Swashbuckle.AspNetCore.Filters;
 using AuthenticationMiddleware = JobConnectApi.Middleware.AuthenticationMiddleware;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,7 +29,18 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddIdentity<IdentityUser, IdentityRole>()
         .AddEntityFrameworkStores<DatabaseContext>();
     builder.Services.AddEndpointsApiExplorer();
-    builder.Services.AddSwaggerGen();
+    builder.Services.AddSwaggerGen(options =>
+    {
+        options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+        {
+            In = ParameterLocation.Header,
+            Name = "Authorization",
+            Type = SecuritySchemeType.ApiKey
+        });
+
+        options.OperationFilter<SecurityRequirementsOperationFilter>();
+    });  
+    
     builder.Services.AddControllers();
     builder.Services.AddScoped<UserService>();
     builder.Services.AddScoped<IJwtService, JwtService>();

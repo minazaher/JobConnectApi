@@ -1,12 +1,20 @@
 {
   "Version": 1,
-  "Hash": "OXYv6T0TWeE6KEQo3Obla/RCbooQY54V5+6lFamt5/s=",
+  "Hash": "INLVLeC2jJ4PqT2Z+QEsxUl29nqiaid8Puekdcx/BV4=",
   "Source": "JobConnectApi",
   "BasePath": "_content/JobConnectApi",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "JobConnectApi\\wwwroot",
+      "Source": "JobConnectApi",
+      "ContentRoot": "D:\\Projects\\.Net\\JobConnectApi\\JobConnectApi\\wwwroot\\",
+      "BasePath": "_content/JobConnectApi",
+      "Pattern": "**"
+    }
+  ],
   "Assets": [
     {
       "Identity": "C:\\Users\\Lenovo\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\8.0.0\\staticwebassets\\V5\\css\\site.css",
@@ -1147,6 +1155,63 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Users\\Lenovo\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\8.0.0\\staticwebassets\\V5\\lib\\jquery\\LICENSE.txt"
+    },
+    {
+      "Identity": "D:\\Projects\\.Net\\JobConnectApi\\JobConnectApi\\wwwroot\\uploads\\54b69ed3-832f-46bd-b3ec-259c066c6dcd_Sections.pdf",
+      "SourceId": "JobConnectApi",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Projects\\.Net\\JobConnectApi\\JobConnectApi\\wwwroot\\",
+      "BasePath": "_content/JobConnectApi",
+      "RelativePath": "uploads/54b69ed3-832f-46bd-b3ec-259c066c6dcd_Sections.pdf",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\54b69ed3-832f-46bd-b3ec-259c066c6dcd_Sections.pdf"
+    },
+    {
+      "Identity": "D:\\Projects\\.Net\\JobConnectApi\\JobConnectApi\\wwwroot\\uploads\\978d5d68-0b08-47dc-a538-5b19ee9ec2c2_Sections.pdf",
+      "SourceId": "JobConnectApi",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Projects\\.Net\\JobConnectApi\\JobConnectApi\\wwwroot\\",
+      "BasePath": "_content/JobConnectApi",
+      "RelativePath": "uploads/978d5d68-0b08-47dc-a538-5b19ee9ec2c2_Sections.pdf",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\978d5d68-0b08-47dc-a538-5b19ee9ec2c2_Sections.pdf"
+    },
+    {
+      "Identity": "D:\\Projects\\.Net\\JobConnectApi\\JobConnectApi\\wwwroot\\uploads\\f764c76b-58fd-4607-95df-4627e367d47f_Sections.pdf",
+      "SourceId": "JobConnectApi",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Projects\\.Net\\JobConnectApi\\JobConnectApi\\wwwroot\\",
+      "BasePath": "_content/JobConnectApi",
+      "RelativePath": "uploads/f764c76b-58fd-4607-95df-4627e367d47f_Sections.pdf",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\f764c76b-58fd-4607-95df-4627e367d47f_Sections.pdf"
     }
   ]
 }

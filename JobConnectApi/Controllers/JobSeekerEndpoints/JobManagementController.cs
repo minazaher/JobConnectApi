@@ -9,17 +9,20 @@ namespace JobConnectApi.Controllers.JobSeekerEndpoints;
 
 [ApiController]
 [Route("user")]
-public class JobManagementController: ControllerBase
+public class JobManagementController : ControllerBase
 {
     private readonly DatabaseContext _databaseContext;
     private readonly IJobService _jobService;
+    private readonly IProposalService _proposalService;
     private readonly UserManager<IdentityUser> _userManager;
 
-    public JobManagementController(DatabaseContext databaseContext, IJobService jobService, UserManager<IdentityUser> userManager)
+    public JobManagementController(DatabaseContext databaseContext, IJobService jobService,
+        UserManager<IdentityUser> userManager, IProposalService proposalService)
     {
         _databaseContext = databaseContext;
         _jobService = jobService;
         _userManager = userManager;
+        _proposalService = proposalService;
     }
 
     [HttpGet("jobs")]
@@ -45,10 +48,40 @@ public class JobManagementController: ControllerBase
         var user = await _userManager.FindByIdAsync(userId);
         if (user is JobSeeker jobSeeker)
         {
-            Console.WriteLine("This user is Job Seeker");
             if (jobSeeker.SavedJobs != null) return jobSeeker.SavedJobs.ToList();
         }
 
         return null;
     }
+
+    [HttpPost]
+    [Route("proposal/submit")]
+    [Authorize(Roles = "JobSeeker", AuthenticationSchemes = "Bearer")]
+    public async Task<IActionResult?> SubmitProposal(SubmitProposalDto proposalDto)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        var userId = User.Claims.FirstOrDefault()?.Value;
+        Console.WriteLine(userId);
+        if (userId == null) return Created();
+
+        if (proposalDto.Cv.Length == 0)
+        {
+            return BadRequest(new { message = "CV file is required." });
+        }
+
+        Proposal proposal = await _proposalService.SaveProposal(proposalDto, userId);
+        
+        return CreatedAtRoute(
+            "GetProposal",
+            new { proposalId = proposal.ProposalId },
+            proposal); // Return created proposal resource
+    }
+
+  
 }
+
+

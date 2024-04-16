@@ -172,3 +172,6 @@ D:\Projects\.Net\JobConnectApi\JobConnectApi\bin\Debug\net8.0\runtimes\win\lib\n
 D:\Projects\.Net\JobConnectApi\JobConnectApi\bin\Debug\net8.0\runtimes\win\lib\netcoreapp3.0\System.Windows.Extensions.dll
 D:\Projects\.Net\JobConnectApi\JobConnectApi\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.UI.dll
 D:\Projects\.Net\JobConnectApi\JobConnectApi\bin\Debug\net8.0\AutoMapper.dll
+D:\Projects\.Net\JobConnectApi\JobConnectApi\bin\Debug\net8.0\Scrutor.dll
+D:\Projects\.Net\JobConnectApi\JobConnectApi\bin\Debug\net8.0\Swashbuckle.AspNetCore.Filters.dll
+D:\Projects\.Net\JobConnectApi\JobConnectApi\bin\Debug\net8.0\Swashbuckle.AspNetCore.Filters.Abstractions.dll

@@ -1,0 +1,33 @@
+{
+  "Files": [
+    {
+      "Id": "D:\\Projects\\.Net\\JobConnectApi\\JobConnectApi\\wwwroot\\uploads\\54b69ed3-832f-46bd-b3ec-259c066c6dcd_Sections.pdf",
+      "PackagePath": "staticwebassets\\uploads\\54b69ed3-832f-46bd-b3ec-259c066c6dcd_Sections.pdf"
+    },
+    {
+      "Id": "D:\\Projects\\.Net\\JobConnectApi\\JobConnectApi\\wwwroot\\uploads\\978d5d68-0b08-47dc-a538-5b19ee9ec2c2_Sections.pdf",
+      "PackagePath": "staticwebassets\\uploads\\978d5d68-0b08-47dc-a538-5b19ee9ec2c2_Sections.pdf"
+    },
+    {
+      "Id": "D:\\Projects\\.Net\\JobConnectApi\\JobConnectApi\\wwwroot\\uploads\\f764c76b-58fd-4607-95df-4627e367d47f_Sections.pdf",
+      "PackagePath": "staticwebassets\\uploads\\f764c76b-58fd-4607-95df-4627e367d47f_Sections.pdf"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.JobConnectApi.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.JobConnectApi.props",
+      "PackagePath": "build\\JobConnectApi.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.JobConnectApi.props",
+      "PackagePath": "buildMultiTargeting\\JobConnectApi.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.JobConnectApi.props",
+      "PackagePath": "buildTransitive\\JobConnectApi.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

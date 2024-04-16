@@ -37,10 +37,14 @@ public class JobManagementController(
         if (userId != null)
         {
             var user = await userManager.FindByIdAsync(userId);
-            // job.Employer = user;
-            job.EmployerId = userId;
-            job.AdminId = null;
-            job.Admin = null;
+            if (user is Employer employer)
+            {
+                job.Employer = employer;
+                job.EmployerId = userId;
+                job.AdminId = null;
+                job.Admin = null;
+            }
+  
         }
 
         jobService.CreateJob(job);

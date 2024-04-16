@@ -15,6 +15,7 @@ public class UserService
     private readonly UserManager<IdentityUser> _userManager;
     private const string RoleAdmin = "Admin";
     private const string RoleEmployer = "Employer";
+    private const string RoleJobSeeker = "JobSeeker";
 
     public UserService(DatabaseContext database, IJwtService jwtService, UserManager<IdentityUser> userManager)
     {
@@ -37,6 +38,9 @@ public class UserService
                     CompanyName = registerRequest.Company,
                     Industry = registerRequest.Industry
                 };
+                break;
+            case RoleJobSeeker:
+                user = new JobSeeker();
                 break;
             default:
                 user = new IdentityUser();

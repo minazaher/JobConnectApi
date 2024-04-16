@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace JobConnectApi.Controllers.JobSeekerEndpoints;
 
 [ApiController]
-[Route("jobs")]
+[Route("user")]
 public class JobManagementController: ControllerBase
 {
     private readonly DatabaseContext _databaseContext;
@@ -19,11 +19,18 @@ public class JobManagementController: ControllerBase
         _jobService = jobService;
     }
 
-    [HttpGet("user")]
+    [HttpGet("jobs")]
     public List<Job> GetActiveJobs()
     {
         List<Job> jobs = _jobService.GetActiveJobs();
         return jobs;
-    } 
+    }
+
+    [HttpGet("jobs/{jobId}")]
+    public async Task<Job> GetJobDetails([FromRoute] int jobId)
+    {
+        Job job = await _jobService.GetJobById(jobId);
+        return job;
+    }
   
 }

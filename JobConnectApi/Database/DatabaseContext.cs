@@ -46,20 +46,23 @@ public class DatabaseContext : IdentityDbContext<IdentityUser>
 
         modelBuilder.Entity<Job>()
             .HasMany(j => j.Applicants)
-            .WithMany(js=> js.AppliedJobs);
+            .WithMany(js=> js.AppliedJobs)
+            .UsingEntity(join=> join.ToTable("JobApplications"));
         
         
         modelBuilder.Entity<Job>()
             .HasMany(j => j.SavedBy)
-            .WithMany(js=> js.SavedJobs);
+            .WithMany(js=> js.SavedJobs)
+            .UsingEntity(join=> join.ToTable("SavedJobs"));
+
         
-        modelBuilder.Entity<JobSeeker>()
-            .HasMany(j => j.AppliedJobs)
-            .WithMany(j=> j.Applicants); 
-        
-        modelBuilder.Entity<JobSeeker>()
-            .HasMany(j => j.SavedJobs)
-            .WithMany(j=> j.SavedBy);
+        // modelBuilder.Entity<JobSeeker>()
+        //     .HasMany(j => j.AppliedJobs)
+        //     .WithMany(j=> j.Applicants); 
+        //
+        // modelBuilder.Entity<JobSeeker>()
+        //     .HasMany(j => j.SavedJobs)
+        //     .WithMany(j=> j.SavedBy);
         
         
     }

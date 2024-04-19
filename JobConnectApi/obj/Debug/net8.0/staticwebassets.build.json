@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "INLVLeC2jJ4PqT2Z+QEsxUl29nqiaid8Puekdcx/BV4=",
+  "Hash": "6ryrNizlqmfnN0JbNpHMAO9Xho1jlpSQ7hWWv6H4gcQ=",
   "Source": "JobConnectApi",
   "BasePath": "_content/JobConnectApi",
   "Mode": "Default",
@@ -1193,6 +1193,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\uploads\\978d5d68-0b08-47dc-a538-5b19ee9ec2c2_Sections.pdf"
+    },
+    {
+      "Identity": "D:\\Projects\\.Net\\JobConnectApi\\JobConnectApi\\wwwroot\\uploads\\bae3697b-0928-42f7-9aca-0351a6b95bc8_Sections.pdf",
+      "SourceId": "JobConnectApi",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Projects\\.Net\\JobConnectApi\\JobConnectApi\\wwwroot\\",
+      "BasePath": "_content/JobConnectApi",
+      "RelativePath": "uploads/bae3697b-0928-42f7-9aca-0351a6b95bc8_Sections.pdf",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\bae3697b-0928-42f7-9aca-0351a6b95bc8_Sections.pdf"
     },
     {
       "Identity": "D:\\Projects\\.Net\\JobConnectApi\\JobConnectApi\\wwwroot\\uploads\\f764c76b-58fd-4607-95df-4627e367d47f_Sections.pdf",

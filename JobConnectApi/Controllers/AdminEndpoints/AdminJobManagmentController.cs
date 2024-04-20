@@ -13,10 +13,10 @@ namespace JobConnectApi.Controllers.AdminEndpoints;
 public class AdminJobManagementController(
     IJobService jobService,
     UserManager<IdentityUser> userManager,
-    DatabaseContext databaseContext)
+    DatabaseContext databaseContext, IDataRepository<Job> _jobsRepository)
     : ControllerBase
 {
-    
+    private readonly IDataRepository<Job> _jobsRepository;
     // POST /admin/jobs/accept?jobId={id}: Accept a job post 
     [HttpPost("/accept")]
     public async void AcceptJobPost([FromQuery] int jobId) // TODO: Error Handling
@@ -34,6 +34,24 @@ public class AdminJobManagementController(
         await databaseContext.SaveChangesAsync();
     }
 
+    // POST /admin/jobs/accept?jobId={id}: Reject a job post 
+    [HttpPost("/reject")]
+    public async void RejectJobPost([FromQuery] int jobId) // TODO: Error Handling
+    {
+        Job job = await jobService.GetJobById(jobId);
+        var userId = User.Claims.FirstOrDefault()?.Value;
+        if (userId != null)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+            job.Admin = user;
+            job.AdminId = userId;
+            job.IsActive = false;
+            job.Status = JobStatus.Rejected;
+        }
+        await databaseContext.SaveChangesAsync();
+
+    }
+    
     // GET /admin/jobs: Get a list of all job posts.
     [HttpGet]
     public List<Job> GetAllJobs() // TODO: Error Handling 

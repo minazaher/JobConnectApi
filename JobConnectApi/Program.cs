@@ -46,6 +46,7 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddScoped<IJwtService, JwtService>();
     builder.Services.AddScoped<IJobService, JobService>();
     builder.Services.AddScoped<IDataRepository<Employer>, DataRepository<Employer>>();
+    builder.Services.AddScoped<IDataRepository<Job>, DataRepository<Job>>();
     builder.Services.AddScoped<IProposalService, ProposalService>();
     builder.Services.AddAutoMapper(typeof(JobMappingProfile));
 

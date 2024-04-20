@@ -2,5 +2,5 @@ namespace JobConnectApi.Models;
 
 public enum JobStatus
 {
-    Pending, Accepted
+    Pending, Accepted, Rejected
 }

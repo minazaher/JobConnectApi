@@ -10,7 +10,7 @@ public class Proposal
     public string CoverLetter { get; set; }
     public string AttachmentPath { get; set; }
     public DateTime SubmissionDate { get; set; }
-    public string Status { get; set; }
+    public ProposalStatus Status { get; set; }
 
     public virtual Job? Job { get; set; }
     public virtual JobSeeker? JobSeeker { get; set; }

@@ -7,10 +7,12 @@ namespace JobConnectApi.Services;
 public class ProposalService: IProposalService
 {
     private readonly DatabaseContext _databaseContext;
+    private readonly IDataRepository<Proposal> _dataRepository;
 
-    public ProposalService(DatabaseContext databaseContext)
+    public ProposalService(DatabaseContext databaseContext, IDataRepository<Proposal> dataRepository)
     {
         _databaseContext = databaseContext;
+        _dataRepository = dataRepository;
     }
 
     public async Task<Proposal> SaveProposal(SubmitProposalDto proposalDto, String userId)
@@ -23,7 +25,7 @@ public class ProposalService: IProposalService
             JobId = proposalDto.JobId,
             CoverLetter = proposalDto.CoverLetter,
             SubmissionDate = DateTime.Now,
-            Status = "Status",
+            Status = ProposalStatus.Pending,
         };
 
         // Upload CV and save path (replace with your storage logic)
@@ -71,9 +73,24 @@ public class ProposalService: IProposalService
     {
         // Implement logic to check for allowed file extensions (e.g., .pdf, .docx)
         // You can use string comparisons or regular expressions
-        var allowedExtensions = new string[] { ".pdf", ".docx" };
+        var allowedExtensions = new[] { ".pdf", ".docx" };
         return allowedExtensions.Contains(Path.GetExtension(fileName).ToLower());
     }
 
+    public async Task<List<Proposal>> GetByJobId(int jobId)
+    {
+        var allProposals = await _dataRepository.GetAllAsync();
+        var result = allProposals.Where(p => p.JobId == jobId);
+        return result.ToList();
+    }
+
+    public async Task<Proposal> UpdateProposalStatus(string proposalId, ProposalStatus status)
+    {
+        var proposal = await _dataRepository.GetByIdAsync(proposalId);
+        proposal.Status = status;
+        var saved = await _dataRepository.Save();
+        return saved ? proposal : throw new KeyNotFoundException();
+    } 
  
+
 }

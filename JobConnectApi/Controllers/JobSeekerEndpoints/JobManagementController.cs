@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace JobConnectApi.Controllers.JobSeekerEndpoints;
 
 [ApiController]
-[Route("user")]
+[Route("/jobs")]
 public class JobManagementController : ControllerBase
 {
     private readonly DatabaseContext _databaseContext;
@@ -25,21 +25,21 @@ public class JobManagementController : ControllerBase
         _proposalService = proposalService;
     }
 
-    [HttpGet("jobs")]
+    [HttpGet]
     public List<Job> GetActiveJobs()
     {
         List<Job> jobs = _jobService.GetActiveJobs();
         return jobs;
     }
 
-    [HttpGet("jobs/{jobId}")]
+    [HttpGet("{jobId}")]
     public async Task<Job> GetJobDetails([FromRoute] int jobId)
     {
         Job job = await _jobService.GetJobById(jobId);
         return job;
     }
 
-    [HttpGet("saved")]
+    [HttpGet("{userId}/saved")]
     [Authorize(AuthenticationSchemes = "Bearer")]
     public async Task<List<Job>?> GetSavedJobs()
     {
@@ -55,7 +55,7 @@ public class JobManagementController : ControllerBase
     }
     
     
-    [HttpPost("jobs/save/{jobId}")]
+    [HttpPost("/{jobId}/save")]
     [Authorize(AuthenticationSchemes = "Bearer")]
     public async void SaveJob([FromRoute] int jobId)
     {
@@ -76,9 +76,9 @@ public class JobManagementController : ControllerBase
 
     }
 
-    [HttpPost]
-    [Route("proposal/submit")]
-    [Authorize(Roles = "JobSeeker", AuthenticationSchemes = "Bearer")]
+  
+    // POST /jobs/{jobId}/apply: Apply for a job (submit proposal with attachments).
+    [HttpPost("/{jobId}/submit")]
     public async Task<IActionResult?> SubmitProposal(SubmitProposalDto proposalDto)
     {
         if (!ModelState.IsValid)
@@ -100,10 +100,10 @@ public class JobManagementController : ControllerBase
         return CreatedAtRoute(
             "GetProposal",
             new { proposalId = proposal.ProposalId },
-            proposal); // Return created proposal resource
+            proposal); 
     }
 
-  
+    
 }
 
 

@@ -175,3 +175,4 @@ D:\Projects\.Net\JobConnectApi\JobConnectApi\bin\Debug\net8.0\AutoMapper.dll
 D:\Projects\.Net\JobConnectApi\JobConnectApi\bin\Debug\net8.0\Scrutor.dll
 D:\Projects\.Net\JobConnectApi\JobConnectApi\bin\Debug\net8.0\Swashbuckle.AspNetCore.Filters.dll
 D:\Projects\.Net\JobConnectApi\JobConnectApi\bin\Debug\net8.0\Swashbuckle.AspNetCore.Filters.Abstractions.dll
+D:\Projects\.Net\JobConnectApi\JobConnectApi\bin\Debug\net8.0\JobConnectApi.db

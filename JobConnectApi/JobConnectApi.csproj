@@ -35,4 +35,10 @@
       </Content>
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="JobConnectApi.db">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>

@@ -81,22 +81,16 @@ public class JobManagementController : ControllerBase
     [HttpPost("/{jobId}/submit")]
     public async Task<IActionResult?> SubmitProposal(SubmitProposalDto proposalDto)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
-
+        
         var userId = User.Claims.FirstOrDefault()?.Value;
-        Console.WriteLine(userId);
-        if (userId == null) return Created();
-
+        if (userId == null) return Unauthorized();
+        
         if (proposalDto.Cv.Length == 0)
         {
             return BadRequest(new { message = "CV file is required." });
         }
 
         Proposal proposal = await _proposalService.SaveProposal(proposalDto, userId);
-        
         return CreatedAtRoute(
             "GetProposal",
             new { proposalId = proposal.ProposalId },

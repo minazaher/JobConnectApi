@@ -25,7 +25,7 @@ public class JobManagementController : ControllerBase
         _proposalService = proposalService;
     }
 
-    [HttpGet]
+    [HttpGet("active")]
     public List<Job> GetActiveJobs()
     {
         List<Job> jobs = _jobService.GetActiveJobs();

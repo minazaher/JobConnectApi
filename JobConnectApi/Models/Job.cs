@@ -8,7 +8,7 @@ namespace JobConnectApi.Models;
 public class Job
 {
     [Column]
-    public int JobId { get; set; }
+    public string JobId { get; set; }
     [ForeignKey("EmployerId")]
     [Column]
     public string? EmployerId { get; set; }  // fk referencing the employer that posted the job, (One to One relation)

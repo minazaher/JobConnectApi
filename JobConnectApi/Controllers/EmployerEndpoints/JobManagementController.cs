@@ -13,41 +13,17 @@ namespace JobConnectApi.Controllers.EmployerEndpoints;
 [Authorize(Roles = "Employer", AuthenticationSchemes = "Bearer")]
 public class JobManagementController(
     IJobService jobService,
-    UserManager<IdentityUser> userManager,
-    UserService userService,
-    DatabaseContext databaseContext)
+    UserManager<IdentityUser> userManager)
     : ControllerBase
 {
     [HttpPost]
     public async void PostJob([FromBody] JobRequest j)
     {
-        Job job = new Job
+        var employerId = User.Claims.FirstOrDefault()?.Value;
+        if (employerId != null)
         {
-            JobTitle = j.JobTitle,
-            JobDescription = j.JobDescription,
-            JobType = j.JobType,
-            JobId = j.JobId,
-            Salray = j.Salray,
-            PostDate = j.PostDate,
-            Status = JobStatus.Pending,
-            IsActive = true
-        };
-
-        var userId = User.Claims.FirstOrDefault()?.Value;
-        if (userId != null)
-        {
-            var user = await userManager.FindByIdAsync(userId);
-            if (user is Employer employer)
-            {
-                job.Employer = employer;
-                job.EmployerId = userId;
-                job.AdminId = null;
-                job.Admin = null;
-            }
-  
+            jobService.CreateJob(j, employerId);
         }
-
-        jobService.CreateJob(job);
     }
 
     [HttpGet]

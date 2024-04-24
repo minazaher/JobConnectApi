@@ -1,13 +1,14 @@
 using ErrorOr;
+using JobConnectApi.DTOs;
 using JobConnectApi.Models;
 
 namespace JobConnectApi.Services;
 
 public interface IJobService
 {
-    ErrorOr<Created> CreateJob(Job job);
-    Task<Job> GetJobById(int id);
-    List<Job> FindAll();
+    Task<ErrorOr<Created>> CreateJob(JobRequest jobRequest, string employerId);
+    Task<Job> GetJobById(string id);
+    List<Job> FindAllJobs();
     List<Job> GetJobsWaitingList();
     List<Job> GetActiveJobs();
     List<Job>  FindByEmployerId(string employerId);

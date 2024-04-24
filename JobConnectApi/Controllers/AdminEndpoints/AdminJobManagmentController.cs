@@ -10,15 +10,9 @@ namespace JobConnectApi.Controllers.AdminEndpoints;
 [ApiController]
 [Route("/admin/jobs")]
 [Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer")]
-public class AdminJobManagementController(
-    IJobService jobService,
-    UserManager<IdentityUser> userManager,
-    DatabaseContext databaseContext,
-    IAdminService adminService)
-    : ControllerBase
+public class AdminJobManagementController(IJobService jobService, IAdminService adminService) : ControllerBase
 {
-
-
+    
     // POST /admin/jobs/accept?jobId={id}: Accept a job post 
     [HttpPost("/accept")]
     public void AcceptJobPost([FromQuery] int jobId) // TODO: Error Handling
@@ -45,7 +39,7 @@ public class AdminJobManagementController(
     [HttpGet]
     public List<Job> GetAllJobs() // TODO: Error Handling 
     {
-        List<Job> jobs = jobService.FindAll();
+        List<Job> jobs = jobService.FindAllJobs();
         return jobs;
     }
 

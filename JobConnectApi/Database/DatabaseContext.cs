@@ -56,14 +56,11 @@ public class DatabaseContext : IdentityDbContext<IdentityUser>
             .UsingEntity(join=> join.ToTable("SavedJobs"));
 
         
-        // modelBuilder.Entity<JobSeeker>()
-        //     .HasMany(j => j.AppliedJobs)
-        //     .WithMany(j=> j.Applicants); 
-        //
-        // modelBuilder.Entity<JobSeeker>()
-        //     .HasMany(j => j.SavedJobs)
-        //     .WithMany(j=> j.SavedBy);
-        
-        
+        modelBuilder.Entity<Job>()
+            .HasOne(j => j.Admin)
+            .WithMany(j => j.AcceptedJobs)
+            .HasForeignKey(j => j.AdminId);
+
+
     }
 }

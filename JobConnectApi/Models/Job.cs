@@ -32,7 +32,7 @@ public class Job
     
     // This allows easier access to user information
     public virtual Employer? Employer { get; set; }
-    public virtual IdentityUser? Admin { get; set; }  
+    public virtual Admin? Admin { get; set; }  
     
     // List of JobSeekers That applied to this job
     public virtual List<JobSeeker>? Applicants { get; set; }

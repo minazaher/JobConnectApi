@@ -1,9 +1,7 @@
 using ErrorOr;
 using JobConnectApi.DTOs;
-using JobConnectApi.Models;
-using Microsoft.AspNetCore.Mvc;
 
-namespace JobConnectApi.Services;
+namespace JobConnectApi.Services.UserServices;
 
 public interface IUserService
 {

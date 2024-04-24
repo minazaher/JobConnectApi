@@ -2,13 +2,13 @@ using JobConnectApi.Database;
 using JobConnectApi.Models;
 using Microsoft.AspNetCore.Identity;
 
-namespace JobConnectApi.Services;
+namespace JobConnectApi.Services.UserServices;
 
 public class AdminService(IJobService jobService, UserManager<Admin> userManager, DatabaseContext databaseContext)
     : IAdminService
 {
 
-    public async void SetJobAcceptedBy(int jobId, string adminId)
+    public async void SetJobAcceptedBy(string jobId, string adminId)
     {
         var admin = await userManager.FindByIdAsync(adminId);
         var job = await jobService.GetJobById(jobId);
@@ -18,7 +18,7 @@ public class AdminService(IJobService jobService, UserManager<Admin> userManager
         await databaseContext.SaveChangesAsync();
     }
 
-    public async void SetJobRejectedBy(int jobId, string adminId)
+    public async void SetJobRejectedBy(string jobId, string adminId)
     {
         var admin = await userManager.FindByIdAsync(adminId);
         var job = await jobService.GetJobById(jobId);

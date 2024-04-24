@@ -15,7 +15,7 @@ public class AdminJobManagementController(IJobService jobService, IAdminService 
     
     // POST /admin/jobs/accept?jobId={id}: Accept a job post 
     [HttpPost("/accept")]
-    public void AcceptJobPost([FromQuery] int jobId) // TODO: Error Handling
+    public void AcceptJobPost([FromQuery] string jobId) // TODO: Error Handling
     {
         var userId = User.Claims.FirstOrDefault()?.Value;
         if (userId != null)
@@ -26,7 +26,7 @@ public class AdminJobManagementController(IJobService jobService, IAdminService 
 
     // POST /admin/jobs/accept?jobId={id}: Reject a job post 
     [HttpPost("/reject")]
-    public void RejectJobPost([FromQuery] int jobId) // TODO: Error Handling
+    public void RejectJobPost([FromQuery] string jobId) // TODO: Error Handling
     {
         var userId = User.Claims.FirstOrDefault()?.Value;
         if (userId != null)
@@ -53,7 +53,7 @@ public class AdminJobManagementController(IJobService jobService, IAdminService 
 
     // GET /admin/jobs/jobId Get details of a specific job post.
     [HttpGet("{jobId}")]
-    public async Task<Job> FindJobById([FromRoute] int jobId) // TODO: Error Handling 
+    public async Task<Job> FindJobById([FromRoute] string jobId) // TODO: Error Handling 
     {
         Job job = await jobService.GetJobById(jobId);
         return job;

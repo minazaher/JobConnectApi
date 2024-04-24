@@ -1,9 +1,7 @@
-using Google.Protobuf.WellKnownTypes;
 using JobConnectApi.DTOs;
 using JobConnectApi.Models;
-using MaybeSharp;
 
-namespace JobConnectApi.Services;
+namespace JobConnectApi.Services.UserServices;
 
 public interface IEmployerService
 {

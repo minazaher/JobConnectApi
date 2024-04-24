@@ -47,8 +47,7 @@ public class JobService : IJobService
         return job;
     }
 
-    public List<Job> FindAllJobs
-        ()
+    public List<Job> FindAllJobs()
     {
         var jobs = _jobRepository.GetAllAsync().Result.ToList();
         return jobs;

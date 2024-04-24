@@ -32,8 +32,8 @@ public class ProposalService: IProposalService
         string cvPath = await UploadCv(proposalDto.Cv);
         proposal.AttachmentPath = cvPath;
 
-        _databaseContext.Proposals.Add(proposal);
-        await _databaseContext.SaveChangesAsync();
+        await _dataRepository.AddAsync(proposal);
+        await _dataRepository.Save();
         return proposal;
     }
     

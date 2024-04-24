@@ -45,6 +45,7 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddScoped<UserService>();
     builder.Services.AddScoped<IJwtService, JwtService>();
     builder.Services.AddScoped<IJobService, JobService>();
+    builder.Services.AddScoped<IAdminService, AdminService>();
     builder.Services.AddScoped<IDataRepository<Employer>, DataRepository<Employer>>();
     builder.Services.AddScoped<IDataRepository<Job>, DataRepository<Job>>();
     builder.Services.AddScoped<IDataRepository<Proposal>, DataRepository<Proposal>>();

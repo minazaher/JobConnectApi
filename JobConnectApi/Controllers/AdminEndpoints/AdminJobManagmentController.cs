@@ -1,6 +1,8 @@
+using ErrorOr;
 using JobConnectApi.Database;
 using JobConnectApi.Models;
 using JobConnectApi.Services;
+using JobConnectApi.Services.UserServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,25 +16,28 @@ public class AdminJobManagementController(IJobService jobService, IAdminService 
 {
     
     // POST /admin/jobs/accept?jobId={id}: Accept a job post 
-    [HttpPost("/accept")]
-    public void AcceptJobPost([FromQuery] string jobId) // TODO: Error Handling
+    [HttpPost("accept")]
+    public async Task<ErrorOr<Updated>> AcceptJobPost([FromQuery] string jobId) // TODO: Error Handling
     {
         var userId = User.Claims.FirstOrDefault()?.Value;
         if (userId != null)
-        {
-            adminService.SetJobAcceptedBy(jobId, userId);
+        { 
+            return await adminService.SetJobAcceptedBy(jobId, userId);
         }
+
+        return Error.Unauthorized();
     }
 
-    // POST /admin/jobs/accept?jobId={id}: Reject a job post 
-    [HttpPost("/reject")]
-    public void RejectJobPost([FromQuery] string jobId) // TODO: Error Handling
+    // POST /admin/jobs/reject?jobId={id}: Reject a job post 
+    [HttpPost("reject")]
+    public async Task<ErrorOr<Updated>> RejectJobPost([FromQuery] string jobId) // TODO: Error Handling
     {
         var userId = User.Claims.FirstOrDefault()?.Value;
         if (userId != null)
         {
-            adminService.SetJobRejectedBy(jobId, userId);
+            return await adminService.SetJobRejectedBy(jobId, userId);
         }
+        return Error.Unauthorized();
     }
 
     // GET /admin/jobs: Get a list of all job posts.

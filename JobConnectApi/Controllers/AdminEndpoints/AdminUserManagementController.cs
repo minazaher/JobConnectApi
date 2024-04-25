@@ -2,6 +2,7 @@ using JobConnectApi.Database;
 using JobConnectApi.DTOs;
 using JobConnectApi.Models;
 using JobConnectApi.Services;
+using JobConnectApi.Services.UserServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;

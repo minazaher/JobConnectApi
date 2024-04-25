@@ -1,20 +1,15 @@
 using System.Text;
 using JobConnectApi.Database;
 using JobConnectApi.Mapper;
-using JobConnectApi.Middleware;
 using JobConnectApi.Models;
 using JobConnectApi.Services;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using AutoMapper;
+using JobConnectApi.Services.UserServices;
 using Microsoft.OpenApi.Models;
-using Microsoft.Owin.Security.Jwt;
 using Swashbuckle.AspNetCore.Filters;
-using AuthenticationMiddleware = JobConnectApi.Middleware.AuthenticationMiddleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +23,7 @@ var builder = WebApplication.CreateBuilder(args);
     });
     builder.Services.AddIdentity<IdentityUser, IdentityRole>()
         .AddEntityFrameworkStores<DatabaseContext>();
+    
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen(options =>
     {
@@ -46,8 +42,11 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddScoped<IJwtService, JwtService>();
     builder.Services.AddScoped<IJobService, JobService>();
     builder.Services.AddScoped<IAdminService, AdminService>();
+    builder.Services.AddScoped<IEmployerService, EmployerService>();
+    builder.Services.AddScoped<IJobSeekerService, JobSeekerService>();
     builder.Services.AddScoped<IDataRepository<Employer>, DataRepository<Employer>>();
     builder.Services.AddScoped<IDataRepository<Job>, DataRepository<Job>>();
+    builder.Services.AddScoped<IDataRepository<JobSeeker>, DataRepository<JobSeeker>>();
     builder.Services.AddScoped<IDataRepository<Proposal>, DataRepository<Proposal>>();
     builder.Services.AddScoped<IProposalService, ProposalService>();
     builder.Services.AddAutoMapper(typeof(JobMappingProfile));

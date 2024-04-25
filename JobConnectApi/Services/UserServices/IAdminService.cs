@@ -1,7 +1,9 @@
+using ErrorOr;
+
 namespace JobConnectApi.Services.UserServices;
 
 public interface IAdminService
 {
-    void SetJobAcceptedBy(string jobId, string adminId);
-    void SetJobRejectedBy(string jobId, string userId);
+    Task<ErrorOr<Updated>> SetJobAcceptedBy(string jobId, string adminId);
+    Task<ErrorOr<Updated>> SetJobRejectedBy(string jobId, string userId);
 }

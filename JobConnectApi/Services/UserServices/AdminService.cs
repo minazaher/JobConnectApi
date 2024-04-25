@@ -1,31 +1,43 @@
+using ErrorOr;
 using JobConnectApi.Database;
 using JobConnectApi.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace JobConnectApi.Services.UserServices;
 
-public class AdminService(IJobService jobService, UserManager<Admin> userManager, DatabaseContext databaseContext)
+public class AdminService(
+    IJobService jobService,
+    IDataRepository<Job> dataRepository,
+    UserManager<IdentityUser> userManager,
+    DatabaseContext databaseContext)
     : IAdminService
 {
-
-    public async void SetJobAcceptedBy(string jobId, string adminId)
+    public async Task<ErrorOr<Updated>> SetJobAcceptedBy(string jobId, string adminId) // TODO use errorOr
     {
-        var admin = await userManager.FindByIdAsync(adminId);
+        var user = await userManager.FindByIdAsync(adminId);
         var job = await jobService.GetJobById(jobId);
-        job.Admin = admin;
-        job.AdminId = adminId;
-        job.Status = JobStatus.Accepted;
-        await databaseContext.SaveChangesAsync();
+        if (user is Admin admin)
+        {
+            job.Admin = admin;
+            job.AdminId = adminId;
+            job.Status = JobStatus.Accepted;
+        }
+
+        await dataRepository.UpdateAsync(job);
+        return await dataRepository.Save() ? Result.Updated : Error.Failure(description: "Something went wrong");
+
     }
 
-    public async void SetJobRejectedBy(string jobId, string adminId)
+    public async Task<ErrorOr<Updated>> SetJobRejectedBy(string jobId, string adminId)
     {
-        var admin = await userManager.FindByIdAsync(adminId);
+        var user = await userManager.FindByIdAsync(adminId);
         var job = await jobService.GetJobById(jobId);
-        job.Admin = admin;
-        job.AdminId = adminId;
-        job.Status = JobStatus.Accepted;
-        await databaseContext.SaveChangesAsync();
-        
-    }
+        if (user is Admin admin)
+        {
+            job.Admin = admin;
+            job.AdminId = adminId;
+            job.Status = JobStatus.Accepted;
+        }
+        await dataRepository.UpdateAsync(job);
+        return await dataRepository.Save() ? Result.Updated : Error.Failure(description: "Something went wrong");    }
 }

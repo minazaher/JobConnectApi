@@ -10,22 +10,15 @@ using RegisterRequest = JobConnectApi.DTOs.RegisterRequest;
 namespace JobConnectApi.Controllers;
 
 [Controller]
-public class UserController : ControllerBase
+public class UserController(UserService userService) : ControllerBase
 {
-    private readonly UserService _userService;
-
-    public UserController(UserService userService)
-    {
-        _userService = userService;
-    }
-
     [HttpPost]
     [Route("register")]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request)
     {
         Console.Write(request);
 
-        var registerResult = await _userService.Register(request); // Assuming this returns ErrorOr<Unit>
+        var registerResult = await userService.Register(request); // Assuming this returns ErrorOr<Unit>
         return registerResult.Match(
             _ => CreatedAtAction(nameof(Register), request), // Success
             TranslateToHttpResponse);
@@ -35,7 +28,7 @@ public class UserController : ControllerBase
     [Route("login")]
     public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
     {
-        var response = await _userService.Login(loginRequest);
+        var response = await userService.Login(loginRequest);
         if (response.Successful)
         {
             return Ok(response);

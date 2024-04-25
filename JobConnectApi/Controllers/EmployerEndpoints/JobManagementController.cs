@@ -1,3 +1,4 @@
+using ErrorOr;
 using JobConnectApi.Database;
 using JobConnectApi.DTOs;
 using JobConnectApi.Models;
@@ -16,18 +17,20 @@ public class JobManagementController(
     UserManager<IdentityUser> userManager)
     : ControllerBase
 {
-    [HttpPost]
-    public async void PostJob([FromBody] JobRequest j)
+    [HttpPost("add")]
+    public async Task<ErrorOr<Created>> PostJob([FromBody] JobRequest j)
     {
         var employerId = User.Claims.FirstOrDefault()?.Value;
         if (employerId != null)
         {
-            jobService.CreateJob(j, employerId);
+            return await jobService.CreateJob(j, employerId);
         }
+
+        return Error.Failure("Something wrong happened");
     }
 
     [HttpGet]
-    public List<Job> GetEmployerJobs()
+    public Task<List<Job>> GetEmployerJobs()
     {
         var userId = User.Claims.FirstOrDefault()?.Value;
 

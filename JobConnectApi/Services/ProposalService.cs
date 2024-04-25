@@ -4,17 +4,8 @@ using JobConnectApi.Models;
 
 namespace JobConnectApi.Services;
 
-public class ProposalService: IProposalService
+public class ProposalService(IDataRepository<Proposal> dataRepository) : IProposalService
 {
-    private readonly DatabaseContext _databaseContext;
-    private readonly IDataRepository<Proposal> _dataRepository;
-
-    public ProposalService(DatabaseContext databaseContext, IDataRepository<Proposal> dataRepository)
-    {
-        _databaseContext = databaseContext;
-        _dataRepository = dataRepository;
-    }
-
     public async Task<Proposal> SaveProposal(SubmitProposalDto proposalDto, String userId)
     {
 
@@ -32,8 +23,8 @@ public class ProposalService: IProposalService
         string cvPath = await UploadCv(proposalDto.Cv);
         proposal.AttachmentPath = cvPath;
 
-        await _dataRepository.AddAsync(proposal);
-        await _dataRepository.Save();
+        await dataRepository.AddAsync(proposal);
+        await dataRepository.Save();
         return proposal;
     }
     
@@ -77,18 +68,18 @@ public class ProposalService: IProposalService
         return allowedExtensions.Contains(Path.GetExtension(fileName).ToLower());
     }
 
-    public async Task<List<Proposal>> GetByJobId(int jobId)
+    public async Task<List<Proposal>> GetByJobId(string jobId)
     {
-        var allProposals = await _dataRepository.GetAllAsync();
-        var result = allProposals.Where(p => p.JobId == jobId);
+        var allProposals = await dataRepository.GetAllAsync();
+        var result = allProposals.Where(p => p.JobId.Equals(jobId));
         return result.ToList();
     }
 
     public async Task<Proposal> UpdateProposalStatus(string proposalId, ProposalStatus status)
     {
-        var proposal = await _dataRepository.GetByIdAsync(proposalId);
+        var proposal = await dataRepository.GetByIdAsync(proposalId);
         proposal.Status = status;
-        var saved = await _dataRepository.Save();
+        var saved = await dataRepository.Save();
         return saved ? proposal : throw new KeyNotFoundException();
     } 
  

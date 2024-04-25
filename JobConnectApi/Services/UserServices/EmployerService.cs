@@ -1,22 +1,22 @@
 using JobConnectApi.Database;
 using JobConnectApi.DTOs;
 using JobConnectApi.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
 
-namespace JobConnectApi.Services;
 
-public class EmployerService(IDataRepository<Employer> _employerRepository) : IEmployerService
+namespace JobConnectApi.Services.UserServices;
+
+public class EmployerService(IDataRepository<Employer> employerRepository) : IEmployerService
 {
 
     public async Task<Employer> GetEmployerById(string id)
     {
-        Employer employer = await _employerRepository.GetByIdAsync(id);
+        Employer employer = await employerRepository.GetByIdAsync(id);
         return employer;
     }
 
     public async Task<List<Employer>> GetAllEmployers()
     {
-        var employers = await _employerRepository.GetAllAsync();
+        var employers = await employerRepository.GetAllAsync();
         var enumerableEmployers = employers.ToList();
         if (!enumerableEmployers.Any())
         {
@@ -37,16 +37,16 @@ public class EmployerService(IDataRepository<Employer> _employerRepository) : IE
             Industry = registerRequest.Industry
         };
 
-        await _employerRepository.AddAsync(employer);
-        await _employerRepository.Save();
+        await employerRepository.AddAsync(employer);
+        await employerRepository.Save();
         return employer;
     }
 
     public async Task<bool> DeleteEmployerById(string id)
     {
-        var employer = await _employerRepository.GetByIdAsync(id);
-        await _employerRepository.DeleteAsync(employer);
-        var isRemoved = await _employerRepository.Save();
+        var employer = await employerRepository.GetByIdAsync(id);
+        await employerRepository.DeleteAsync(employer);
+        var isRemoved = await employerRepository.Save();
         return isRemoved;
     }
 }

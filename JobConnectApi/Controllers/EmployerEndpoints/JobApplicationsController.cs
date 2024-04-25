@@ -19,7 +19,7 @@ public class JobApplicationsController
     
     // GET /jobs/{jobId}/proposals: Get submitted proposals for a job.
     [HttpGet]
-    public async Task<List<Proposal>> GetByJobId(int jobId)
+    public async Task<List<Proposal>> GetByJobId(string jobId)
     {
         return await _proposalService.GetByJobId(jobId);
     }

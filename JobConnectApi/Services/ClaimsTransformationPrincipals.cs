@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using JobConnectApi.Services.UserServices;
 using Microsoft.AspNetCore.Authentication;
 
 namespace JobConnectApi.Services;

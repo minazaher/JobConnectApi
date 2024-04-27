@@ -5,6 +5,7 @@ using JobConnectApi.Services;
 using JobConnectApi.Services.UserServices;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace JobConnectApi.Controllers.JobSeekerEndpoints;
 
@@ -13,7 +14,7 @@ namespace JobConnectApi.Controllers.JobSeekerEndpoints;
 public class JobManagementController(
     DatabaseContext databaseContext,
     IJobService jobService,
-    UserManager<JobSeeker> userManager,
+    UserManager<IdentityUser> userManager,
     IJobSeekerService jobSeekerService,
     IProposalService proposalService) : ControllerBase
 {
@@ -37,7 +38,10 @@ public class JobManagementController(
         var userId = User.Claims.FirstOrDefault()?.Value;
         if (userId == null) return null;
         var user = await userManager.FindByIdAsync(userId);
-        if (user is { SavedJobs: { } jobs }) return jobs.ToList();
+        if (user is JobSeeker js && !js.SavedJobs.IsNullOrEmpty())
+        {
+            return js.SavedJobs.ToList();
+        }
 
         return null;
     }

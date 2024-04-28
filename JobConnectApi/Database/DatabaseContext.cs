@@ -12,6 +12,8 @@ public class DatabaseContext : IdentityDbContext<IdentityUser>
     public DbSet<Employer> Employers { get; set; }
     public DbSet<JobSeeker> JobSeekers { get; set; }
     public DbSet<Proposal> Proposals { get; set; }
+    public DbSet<Message> Messages { get; set; }
+    public DbSet<Chat> Chats { get; set; }
 
     public DatabaseContext(DbContextOptions options) : base(options)
     {
@@ -61,6 +63,20 @@ public class DatabaseContext : IdentityDbContext<IdentityUser>
             .WithMany(j => j.AcceptedJobs)
             .HasForeignKey(j => j.AdminId);
 
+        modelBuilder.Entity<Chat>()
+            .HasOne(ch => ch.Employer)
+            .WithMany(e=> e.Chats)
+            .HasForeignKey(ch=>ch.EmployerId);
+        
+        modelBuilder.Entity<Chat>()
+            .HasOne(ch => ch.JobSeeker)
+            .WithMany(js=> js.Chats)
+            .HasForeignKey(ch=>ch.JobSeekerId);
+
+        modelBuilder.Entity<Chat>()
+            .HasMany(ch => ch.Messages)
+            .WithOne(m => m.Chat)
+            .HasForeignKey(m => m.ChatId);
 
     }
 }

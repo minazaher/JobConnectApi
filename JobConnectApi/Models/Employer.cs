@@ -11,5 +11,6 @@ public class Employer: IdentityUser
     // Navigation property for one-to-many relationship with Post
     public virtual List<Job> PostedPosts { get; set; }
     
+    public virtual List<Chat>? Chats { get; set; }
     
 }

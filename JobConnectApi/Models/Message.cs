@@ -2,12 +2,13 @@ namespace JobConnectApi.Models;
 
 public class Message
 {
-        // public int MessageId { get; set; }
-        // public int SenderId { get; set; }
-        // public int RecipientId { get; set; }
-        // public string Content { get; set; }
-        // public DateTime SentDate { get; set; }
-        //
-        // public User Sender { get; set; }
-        // public User Reciever { get; set; }
+    public string MessageId { get; set; } = Guid.NewGuid().ToString();
+    public string SenderId { get; set; }
+    public string RecipientId { get; set; }
+    public string ChatId { get; set; }
+    
+    public string Content { get; set; }
+    public DateTime SentDate { get; set; }
+    
+    public Chat? Chat { get; set; }
 }

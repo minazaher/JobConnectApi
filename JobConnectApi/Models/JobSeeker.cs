@@ -14,4 +14,7 @@ public class JobSeeker: IdentityUser
     
     // List of Job proposals 
     public virtual List<Proposal>? Proposals { get; set; }
+    public virtual List<Chat>? Chats { get; set; }
+
+    
 }

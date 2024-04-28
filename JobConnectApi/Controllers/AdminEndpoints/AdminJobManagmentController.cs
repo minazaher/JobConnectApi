@@ -1,66 +1,94 @@
+using AutoMapper;
 using ErrorOr;
-using JobConnectApi.Database;
+using JobConnectApi.DTOs;
+using JobConnectApi.Mapper;
 using JobConnectApi.Models;
 using JobConnectApi.Services;
 using JobConnectApi.Services.UserServices;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace JobConnectApi.Controllers.AdminEndpoints;
 
 [ApiController]
 [Route("/admin/jobs")]
 [Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer")]
-public class AdminJobManagementController(IJobService jobService, IAdminService adminService) : ControllerBase
+public class g(IJobService jobService, IAdminService adminService, IMapper mapper)
+    : ControllerBase
 {
-    
     // POST /admin/jobs/accept?jobId={id}: Accept a job post 
     [HttpPost("accept")]
-    public async Task<ErrorOr<Updated>> AcceptJobPost([FromQuery] string jobId) // TODO: Error Handling
-    {
-        var userId = User.Claims.FirstOrDefault()?.Value;
-        if (userId != null)
-        { 
-            return await adminService.SetJobAcceptedBy(jobId, userId);
-        }
-
-        return Error.Unauthorized();
-    }
-
-    // POST /admin/jobs/reject?jobId={id}: Reject a job post 
-    [HttpPost("reject")]
-    public async Task<ErrorOr<Updated>> RejectJobPost([FromQuery] string jobId) // TODO: Error Handling
+    public async Task<IActionResult> AcceptJobPost([FromQuery] string jobId) 
     {
         var userId = User.Claims.FirstOrDefault()?.Value;
         if (userId != null)
         {
-            return await adminService.SetJobRejectedBy(jobId, userId);
+            return await adminService.SetJobAcceptedBy(jobId, userId) ? Ok() : Problem("Failed to update Job status");
         }
-        return Error.Unauthorized();
+
+        return Unauthorized();
+    }
+
+    // POST /admin/jobs/reject?jobId={id}: Reject a job post 
+    [HttpPost("reject")]
+    public async Task<IActionResult> RejectJobPost([FromQuery] string jobId) 
+    {
+        var userId = User.Claims.FirstOrDefault()?.Value;
+        if (userId != null)
+        {
+            return await adminService.SetJobRejectedBy(jobId, userId) ? Ok() : Problem("Failed to update Job status");
+        }
+
+        return Unauthorized();
     }
 
     // GET /admin/jobs: Get a list of all job posts.
     [HttpGet]
-    public List<Job> GetAllJobs() // TODO: Error Handling 
+    public IActionResult GetAllJobs()
     {
         List<Job> jobs = jobService.FindAllJobs();
-        return jobs;
+        if (jobs.IsNullOrEmpty())
+        {
+            return NotFound("No jobs found.");
+        }
+        var jobResponses = jobs.Select(mapper.Map<JobResponse>).ToList();
+
+        return Ok(jobResponses);
     }
 
     // GET /admin/jobs/waiting Get details of a specific job post.
     [HttpGet("waiting")]
-    public List<Job> GetWaitingList() // TODO: Error Handling 
+    public IActionResult GetWaitingList()
     {
-        List<Job> jobs = jobService.GetJobsWaitingList();
-        return jobs;
+        var jobs = jobService.GetJobsWaitingList();
+        if (jobs.IsNullOrEmpty())
+        {
+            return NotFound("No jobs found.");
+        }
+
+        var jobResponses = jobs.Select(mapper.Map<JobResponse>).ToList();
+        return Ok(jobResponses);
     }
 
     // GET /admin/jobs/jobId Get details of a specific job post.
     [HttpGet("{jobId}")]
-    public async Task<Job> FindJobById([FromRoute] string jobId) // TODO: Error Handling 
+    public async Task<IActionResult> FindJobById([FromRoute] string jobId) 
     {
-        Job job = await jobService.GetJobById(jobId);
-        return job;
+        try
+        {
+            Job job = await jobService.GetJobById(jobId);
+            var responseDto = mapper.Map<JobResponse>(job);
+
+            return Ok(responseDto);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return Problem(ex.Message);
+        }
     }
 }

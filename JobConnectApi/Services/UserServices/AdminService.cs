@@ -12,7 +12,7 @@ public class AdminService(
     DatabaseContext databaseContext)
     : IAdminService
 {
-    public async Task<ErrorOr<Updated>> SetJobAcceptedBy(string jobId, string adminId) // TODO use errorOr
+    public async Task<bool> SetJobAcceptedBy(string jobId, string adminId) // TODO use errorOr
     {
         var user = await userManager.FindByIdAsync(adminId);
         var job = await jobService.GetJobById(jobId);
@@ -24,11 +24,10 @@ public class AdminService(
         }
 
         await dataRepository.UpdateAsync(job);
-        return await dataRepository.Save() ? Result.Updated : Error.Failure(description: "Something went wrong");
-
+        return await dataRepository.Save();
     }
 
-    public async Task<ErrorOr<Updated>> SetJobRejectedBy(string jobId, string adminId)
+    public async Task<bool> SetJobRejectedBy(string jobId, string adminId)
     {
         var user = await userManager.FindByIdAsync(adminId);
         var job = await jobService.GetJobById(jobId);
@@ -38,6 +37,8 @@ public class AdminService(
             job.AdminId = adminId;
             job.Status = JobStatus.Accepted;
         }
+
         await dataRepository.UpdateAsync(job);
-        return await dataRepository.Save() ? Result.Updated : Error.Failure(description: "Something went wrong");    }
+        return await dataRepository.Save();
+    }
 }

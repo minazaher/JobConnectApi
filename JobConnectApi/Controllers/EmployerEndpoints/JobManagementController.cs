@@ -13,28 +13,38 @@ namespace JobConnectApi.Controllers.EmployerEndpoints;
 [Route("/jobs")]
 [Authorize(Roles = "Employer", AuthenticationSchemes = "Bearer")]
 public class JobManagementController(
-    IJobService jobService,
-    UserManager<IdentityUser> userManager)
-    : ControllerBase
+    IJobService jobService)
+    : ErrorController
 {
     [HttpPost("add")]
-    public async Task<ErrorOr<Created>> PostJob([FromBody] JobRequest j)
+    public async Task<IActionResult> PostJob([FromBody] JobRequest j)
     {
         var employerId = User.Claims.FirstOrDefault()?.Value;
+        Console.WriteLine(employerId);
         if (employerId != null)
         {
-            return await jobService.CreateJob(j, employerId);
+            var result = await jobService.CreateJob(j, employerId);
+            return result.Match(_ => CreatedAtPostJob(j),
+                Problem);
         }
 
-        return Error.Failure("Something wrong happened");
+        return Unauthorized();
     }
 
     [HttpGet]
-    public Task<List<Job>> GetEmployerJobs()
+    public IActionResult GetEmployerJobs()
     {
         var userId = User.Claims.FirstOrDefault()?.Value;
-
+        Console.WriteLine("user id is "+ userId);
         var jobs = jobService.FindByEmployerId(userId!);
-        return jobs;
+        return jobs.Match(Ok, Problem);
+    }
+
+
+    private CreatedAtActionResult CreatedAtPostJob(JobRequest j)
+    {
+        return CreatedAtAction(
+            actionName: nameof(PostJob),
+            value: j);
     }
 }

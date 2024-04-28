@@ -3,6 +3,7 @@ using JobConnectApi.Database;
 using JobConnectApi.DTOs;
 using JobConnectApi.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 
 namespace JobConnectApi.Services;
 
@@ -66,17 +67,12 @@ public class JobService(IDataRepository<Job> jobRepository, UserManager<Identity
         return jobs;
     }
 
-    public async Task<List<Job>> FindByEmployerId(string employerId)
+    public ErrorOr<List<Job>> FindByEmployerId(string employerId)
     {
         var jobs = FindAllJobs()
             .FindAll(j => j.EmployerId == employerId);
-        // var employer = await userManager.FindByIdAsync(employerId);
-        // if (employer is Employer emp)
-        // {
-        //     jobs.ForEach(j=> j.Employer = emp);
-        //
-        // }
-        return jobs;
+        
+        return jobs.IsNullOrEmpty()? Error.NotFound(): jobs;
     }
     
 }

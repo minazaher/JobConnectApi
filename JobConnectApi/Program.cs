@@ -1,4 +1,5 @@
 using System.Text;
+using AutoMapper;
 using JobConnectApi.Database;
 using JobConnectApi.Mapper;
 using JobConnectApi.Models;
@@ -49,8 +50,13 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddScoped<IDataRepository<JobSeeker>, DataRepository<JobSeeker>>();
     builder.Services.AddScoped<IDataRepository<Proposal>, DataRepository<Proposal>>();
     builder.Services.AddScoped<IProposalService, ProposalService>();
-    builder.Services.AddAutoMapper(typeof(JobMappingProfile));
+    var mapperConfig = new MapperConfiguration(mc =>
+    {
+        mc.AddProfile(new JobMappingProfile());
+    });
 
+    IMapper mapper = mapperConfig.CreateMapper();
+    builder.Services.AddSingleton(mapper);
 
     builder.Services.AddDbContext<DatabaseContext>();
     builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>

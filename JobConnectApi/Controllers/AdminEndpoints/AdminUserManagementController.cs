@@ -1,3 +1,4 @@
+using AutoMapper;
 using JobConnectApi.Database;
 using JobConnectApi.DTOs;
 using JobConnectApi.Models;
@@ -13,9 +14,8 @@ namespace JobConnectApi.Controllers.AdminEndpoints;
 [Route("admin/employers")]
 [ApiController]
 [Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer")]
-public class AdminUserManagementController(IEmployerService employerService) : ControllerBase
+public class AdminUserManagementController(IEmployerService employerService, IMapper mapper) : ControllerBase
 {
-    
     // GET /admin/employers: Get a list of all employers.
     [HttpGet]
     public async Task<IActionResult> GetAllEmployers()
@@ -26,23 +26,44 @@ public class AdminUserManagementController(IEmployerService employerService) : C
             return NotFound("No Employers found");
         }
 
-        return Ok(employers);
+        var employerResponses = employers.Select(mapper.Map<EmployerDto>).ToList();
+        return Ok(employerResponses);
     }
 
     // GET /admin/employers/{employerId}: Get details of a specific employer.
     [HttpGet("{employerId}")]
     public async Task<IActionResult> GetEmployerById([FromRoute] string employerId)
     {
-        var employer = await employerService.GetEmployerById(employerId);
-        return Ok(employer);
+        try
+        {
+            var employer = await employerService.GetEmployerById(employerId);
+
+            var employerResponse = mapper.Map<EmployerDto>(employer);
+            return Ok(employerResponse);
+        }
+        catch (KeyNotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
+        catch (Exception e)
+        {
+            return Problem(e.Message);
+        }
     }
 
     // POST /admin/employers: Create a new employer 
     [HttpPost]
     public async Task<IActionResult> AddEmployer([FromBody] RegisterRequest registerRequest)
     {
-        Employer employer = await employerService.AddEmployer(registerRequest);
-        return Ok(employer);
+        try
+        {
+            Employer? employer = await employerService.AddEmployer(registerRequest);
+            return Ok(employer);
+        }
+        catch (Exception e)
+        {
+            return Problem(e.Message);
+        }
     }
 
     // DELETE /admin/employers/{employerId}: Delete an employer.

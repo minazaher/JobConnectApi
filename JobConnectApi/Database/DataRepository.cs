@@ -40,6 +40,7 @@ public class DataRepository<T> : IDataRepository<T> where T : class
         table.Remove(entity);
         return Task.CompletedTask;
     }
+    
 
     public async Task<bool> Save()
     {

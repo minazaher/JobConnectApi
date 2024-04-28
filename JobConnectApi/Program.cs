@@ -53,6 +53,7 @@ var builder = WebApplication.CreateBuilder(args);
     var mapperConfig = new MapperConfiguration(mc =>
     {
         mc.AddProfile(new JobMappingProfile());
+        mc.AddProfile(new EmployerMappingProfile());
     });
 
     IMapper mapper = mapperConfig.CreateMapper();

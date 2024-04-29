@@ -6,5 +6,8 @@ namespace JobConnectApi.Services.UserServices;
 public interface IJobSeekerService
 {
     Task<ErrorOr<Updated>> AddToSavedJobs(string userId ,string jobId);
-    Task<ErrorOr<Created>> SubmitProposal(string userId ,SubmitProposalDto proposalDto);
+    Task<bool> SubmitProposal(string userId ,SubmitProposalDto proposalDto);
+    
+    // Task<List<Chat>> GetJobSeekerChats(string id);
+
 }

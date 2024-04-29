@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace JobConnectApi.Models;
 
 public class Message
@@ -10,5 +12,6 @@ public class Message
     public string Content { get; set; }
     public DateTime SentDate { get; set; }
     
+    [JsonIgnore]
     public Chat? Chat { get; set; }
 }

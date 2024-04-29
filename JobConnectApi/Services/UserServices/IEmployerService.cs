@@ -9,4 +9,5 @@ public interface IEmployerService
     Task<List<Employer?>> GetAllEmployers();
     Task<Employer?> AddEmployer(RegisterRequest request);
     Task<bool> DeleteEmployerById(string id);
+    // Task<List<Chat>> GetEmployerChats(string id);
 }

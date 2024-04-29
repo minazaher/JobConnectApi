@@ -45,10 +45,13 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddScoped<IAdminService, AdminService>();
     builder.Services.AddScoped<IEmployerService, EmployerService>();
     builder.Services.AddScoped<IJobSeekerService, JobSeekerService>();
+    builder.Services.AddScoped<IChatService, ChatService>();
     builder.Services.AddScoped<IDataRepository<Employer>, DataRepository<Employer>>();
     builder.Services.AddScoped<IDataRepository<Job>, DataRepository<Job>>();
     builder.Services.AddScoped<IDataRepository<JobSeeker>, DataRepository<JobSeeker>>();
     builder.Services.AddScoped<IDataRepository<Proposal>, DataRepository<Proposal>>();
+    builder.Services.AddScoped<IDataRepository<Chat>, DataRepository<Chat>>();
+    builder.Services.AddScoped<IDataRepository<Message>, DataRepository<Message>>();
     builder.Services.AddScoped<IProposalService, ProposalService>();
     var mapperConfig = new MapperConfiguration(mc =>
     {

@@ -27,14 +27,20 @@ public class JobSeekerService(
         return Error.NotFound(description: "Saved Jobs Not Found");
     }
 
-    public async Task<ErrorOr<Created>> SubmitProposal(string userId, SubmitProposalDto proposalDto)
+    public async Task<bool> SubmitProposal(string userId, SubmitProposalDto proposalDto)
     {
-        Proposal proposal = await proposalService.SaveProposal(proposalDto, userId);
-        var user = await userRepository.GetByIdAsync(userId);
-        if (user.Proposals != null)
-            user.Proposals.Add(proposal);
-        else
-            return Error.Failure("Proposals is null");
-        return await userRepository.Save() ? Result.Created : Error.Failure();
+        try
+        {
+            Proposal proposal = await proposalService.SaveProposal(proposalDto, userId);
+            var user = await userRepository.GetByIdAsync(userId);
+            if (user.Proposals != null)
+                throw new Exception("There are no proposals for this user");
+            user.Proposals?.Add(proposal);
+            return await userRepository.Save();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
     }
 }

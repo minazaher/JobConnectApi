@@ -3,6 +3,7 @@ using JobConnectApi.Database;
 using JobConnectApi.Models;
 using JobConnectApi.Services;
 using JobConnectApi.Services.UserServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -10,6 +11,8 @@ using Microsoft.IdentityModel.Tokens;
 namespace JobConnectApi.Controllers.JobSeekerEndpoints;
 
 [ApiController]
+[Authorize(Roles = "JobSeeker", AuthenticationSchemes = "Bearer")]
+
 [Route("/jobs")]
 public class JobManagementController(
     DatabaseContext databaseContext,
@@ -47,7 +50,7 @@ public class JobManagementController(
     }
 
 
-    [HttpPost("/{jobId}/save")]
+    [HttpPost("{jobId}/save")]
     public async Task<ErrorOr<Updated>> SaveJob([FromRoute] string jobId)
     {
         string? userId = User.Claims.FirstOrDefault()?.Value;
@@ -60,15 +63,21 @@ public class JobManagementController(
     }
 
 
-    // POST /jobs/{jobId}/apply: Apply for a job (submit proposal with attachments).
-    [HttpPost("/{jobId}/submit")]
-    public async Task<ErrorOr<Created>> SubmitProposal(SubmitProposalDto proposalDto)
+    [HttpPost("apply")] // Keep the route template for consistency
+    public async Task<IActionResult> SubmitProposal([FromForm] SubmitProposalDto proposalDto)
     {
         if (proposalDto.Cv.Length == 0)
         {
-            return Error.Validation(description: "CV file is required");
+            return Problem( "CV file is required");
         }
+        Console.WriteLine("the sent jobId is" +   proposalDto.JobId);
         string? userId = User.Claims.FirstOrDefault()?.Value;
-        return userId != null ? await jobSeekerService.SubmitProposal(userId, proposalDto) : Error.Unauthorized();
+        if (userId != null)
+        {
+            await jobSeekerService.SubmitProposal(userId, proposalDto);
+            return Ok("Saved");
+        }
+
+        return Problem("IDK what happened");
     }
 }

@@ -4,10 +4,12 @@ using JobConnectApi.Models;
 
 namespace JobConnectApi.Services;
 
-public class ProposalService(IDataRepository<Proposal> dataRepository) : IProposalService
+public class ProposalService(IDataRepository<Proposal> dataRepository, IChatService chatService) : IProposalService
 {
     public async Task<Proposal> SaveProposal(SubmitProposalDto proposalDto, String userId)
     {
+        Console.WriteLine("User id is :" + userId);
+        Console.WriteLine("JobId:" + proposalDto.JobId);
 
         var proposal = new Proposal
         {
@@ -25,6 +27,7 @@ public class ProposalService(IDataRepository<Proposal> dataRepository) : IPropos
 
         await dataRepository.AddAsync(proposal);
         await dataRepository.Save();
+        Console.WriteLine("We reached this point!");
         return proposal;
     }
     
@@ -75,11 +78,21 @@ public class ProposalService(IDataRepository<Proposal> dataRepository) : IPropos
         return result.ToList();
     }
 
-    public async Task<Proposal> UpdateProposalStatus(string proposalId, ProposalStatus status)
+    public async Task<Proposal> UpdateProposalStatus(string proposalId, ProposalStatus status, string employerId)
     {
         var proposal = await dataRepository.GetByIdAsync(proposalId);
         proposal.Status = status;
         var saved = await dataRepository.Save();
+        if (status == ProposalStatus.Accepted)
+        {
+            Chat chat = new Chat
+            {
+                Id = Guid.NewGuid().ToString(),
+                JobSeekerId = proposal.JobSeekerId,
+                EmployerId = employerId
+            };
+           saved = saved && await chatService.CreateChat(chat);
+        }
         return saved ? proposal : throw new KeyNotFoundException();
     } 
  

@@ -1,3 +1,6 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using AutoMapper;
 using ErrorOr;
 using JobConnectApi.Database;
 using JobConnectApi.DTOs;
@@ -16,7 +19,7 @@ namespace JobConnectApi.Controllers.JobSeekerEndpoints;
 [Route("/jobs")]
 public class JobManagementController(
     IJobService jobService,
-    UserManager<IdentityUser> userManager,
+    IMapper mapper,
     IJobSeekerService jobSeekerService) : ControllerBase
 {
     [HttpGet("active")]
@@ -89,5 +92,13 @@ public class JobManagementController(
         }
 
         return Problem("IDK what happened");
+    }
+
+    [HttpGet("search")]
+    public IActionResult SearchJobsByTitle([FromQuery] string title)
+    {
+        var jobs = jobService.SearchJobsByTitle(title);
+        var jobResponses = jobs.Select(mapper.Map<JobResponse>).ToList();
+        return Ok(jobResponses);
     }
 }

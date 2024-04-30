@@ -12,4 +12,5 @@ public interface IJobService
     List<Job> GetJobsWaitingList();
     List<Job> GetActiveJobs();
     ErrorOr<List<Job>> FindByEmployerId(string employerId);
+    List<Job> SearchJobsByTitle(string title);
 }

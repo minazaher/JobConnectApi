@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("JobConnectApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cf516e8b1f7c8c65be22add80fb83596045a9297")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c2d8029106940d8a74d7665b955394e0f2f19413")]
 [assembly: System.Reflection.AssemblyProductAttribute("JobConnectApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("JobConnectApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

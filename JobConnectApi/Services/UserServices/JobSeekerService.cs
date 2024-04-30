@@ -145,4 +145,5 @@ public class JobSeekerService(
             throw new Exception(ex.Message);
         }
     }
+    
 }

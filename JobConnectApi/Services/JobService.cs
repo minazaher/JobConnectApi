@@ -1,13 +1,20 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using ErrorOr;
 using JobConnectApi.Database;
 using JobConnectApi.DTOs;
 using JobConnectApi.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 namespace JobConnectApi.Services;
 
-public class JobService(IDataRepository<Job> jobRepository, UserManager<IdentityUser> userManager)
+public class JobService(
+    IDataRepository<Job> jobRepository,
+    DatabaseContext databaseContext,
+    UserManager<IdentityUser> userManager,
+    IDataRepository<Employer> employerRepository)
     : IJobService
 {
     public async Task<ErrorOr<Created>> CreateJob(JobRequest j, string employerId)
@@ -33,19 +40,22 @@ public class JobService(IDataRepository<Job> jobRepository, UserManager<Identity
             Console.WriteLine("Job is " + job);
             await jobRepository.AddAsync(job);
             bool saved = await jobRepository.Save();
-            Console.WriteLine("is job saved:"+ saved );
+            Console.WriteLine("is job saved:" + saved);
             return saved ? Result.Created : Error.Failure();
         }
-        Console.WriteLine("User Is Not Employer!"+ user.ToString());
+
+        Console.WriteLine("User Is Not Employer!" + user.ToString());
 
         return Error.Unauthorized();
     }
 
     public async Task<Job> GetJobById(string id)
     {
-        Job job = await jobRepository.GetByIdAsync(id);
-        Console.WriteLine("Job found in service" + job.ToString());
-        return job;
+        var job = await jobRepository.GetByIdAsync(id);
+
+        var employer = await employerRepository.GetByIdAsync(job.EmployerId!);
+        if (job.Employer != null) job.Employer.UserName = employer.UserName;
+        return job ?? throw new KeyNotFoundException("Job Not found");
     }
 
     public List<Job> FindAllJobs()
@@ -72,8 +82,13 @@ public class JobService(IDataRepository<Job> jobRepository, UserManager<Identity
     {
         var jobs = FindAllJobs()
             .FindAll(j => j.EmployerId == employerId);
-        
-        return jobs.IsNullOrEmpty()? Error.NotFound(): jobs;
+
+        return jobs.IsNullOrEmpty() ? Error.NotFound() : jobs;
     }
-    
+
+    public List<Job> SearchJobsByTitle(string title)
+    {
+        List<Job> jobs = FindAllJobs().FindAll(j => j.JobTitle.Normalize().Contains(title.Normalize())).ToList();
+        return jobs.Count == 0 ? new List<Job>() : jobs;
+    }
 }

@@ -32,6 +32,8 @@ public class Job
     public bool IsActive { get; set; }
     
     // This allows easier access to user information
+    [JsonIgnore]
+
     public virtual Employer? Employer { get; set; }
     public virtual Admin? Admin { get; set; }  
     

@@ -240,6 +240,22 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\cac95b82-ecd1-4048-8d97-737cc7162483_IA Projects Ideas.pdf))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\cb812722-7ffa-42c7-ac8a-1fc438e5008f_Mina Zaher's Resume.pdf))">
+      <SourceType>Package</SourceType>
+      <SourceId>JobConnectApi</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/JobConnectApi</BasePath>
+      <RelativePath>uploads/cb812722-7ffa-42c7-ac8a-1fc438e5008f_Mina Zaher's Resume.pdf</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\cb812722-7ffa-42c7-ac8a-1fc438e5008f_Mina Zaher's Resume.pdf))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\uploads\cf402a82-9a15-4b60-904d-d7b8a1878e20_IA Projects Ideas.pdf))">
       <SourceType>Package</SourceType>
       <SourceId>JobConnectApi</SourceId>

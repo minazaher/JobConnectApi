@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "W8AX5fPPs6MYeIeMGwHn2WNtCi6blqwSbmBC3MZN0sQ=",
+  "Hash": "GAMFKep3WLxzDENgniL8xlQY8KWtCvnnq3HPn0AMGWY=",
   "Source": "JobConnectApi",
   "BasePath": "_content/JobConnectApi",
   "Mode": "Default",
@@ -1440,6 +1440,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\uploads\\cac95b82-ecd1-4048-8d97-737cc7162483_IA Projects Ideas.pdf"
+    },
+    {
+      "Identity": "D:\\Projects\\.Net\\JobConnectApi\\JobConnectApi\\wwwroot\\uploads\\cb812722-7ffa-42c7-ac8a-1fc438e5008f_Mina Zaher's Resume.pdf",
+      "SourceId": "JobConnectApi",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Projects\\.Net\\JobConnectApi\\JobConnectApi\\wwwroot\\",
+      "BasePath": "_content/JobConnectApi",
+      "RelativePath": "uploads/cb812722-7ffa-42c7-ac8a-1fc438e5008f_Mina Zaher's Resume.pdf",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\cb812722-7ffa-42c7-ac8a-1fc438e5008f_Mina Zaher's Resume.pdf"
     },
     {
       "Identity": "D:\\Projects\\.Net\\JobConnectApi\\JobConnectApi\\wwwroot\\uploads\\cf402a82-9a15-4b60-904d-d7b8a1878e20_IA Projects Ideas.pdf",

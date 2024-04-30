@@ -28,6 +28,6 @@ public class JobApplicationsController(IProposalService proposalService) : Contr
     public async Task<Proposal> RejectProposal([FromRoute] string proposalId)
     {
         var employerId = User.Claims.FirstOrDefault()?.Value;
-        return await proposalService.UpdateProposalStatus(proposalId, ProposalStatus.Rejected, employerId);
+        return await proposalService.UpdateProposalStatus(proposalId, ProposalStatus.Rejected, employerId!);
     }
 }

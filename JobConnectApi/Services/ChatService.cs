@@ -17,6 +17,7 @@ public class ChatService(IDataRepository<Chat> chatRepository, IDataRepository<M
     public async Task<bool> SendMessage(Message message, string chatId)
     {
         await messageRepository.AddAsync(message);
+        /*
         Chat chat = await GetChatById(chatId);
         if (chat == null)
         {
@@ -28,9 +29,10 @@ public class ChatService(IDataRepository<Chat> chatRepository, IDataRepository<M
         }
 
         chat.Messages!.Add(message);
-        var saved = await chatRepository.Save() &&  await messageRepository.Save();
+        */
+        var saved =await messageRepository.Save(); //SaveChat
         return saved;
-    }
+    }   
 
     public async Task<List<Message>> GetChatMessages(string chatId)
     {

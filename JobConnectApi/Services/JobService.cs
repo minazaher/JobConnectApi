@@ -44,6 +44,7 @@ public class JobService(IDataRepository<Job> jobRepository, UserManager<Identity
     public async Task<Job> GetJobById(string id)
     {
         Job job = await jobRepository.GetByIdAsync(id);
+        Console.WriteLine("Job found in service" + job.ToString());
         return job;
     }
 
@@ -63,7 +64,7 @@ public class JobService(IDataRepository<Job> jobRepository, UserManager<Identity
     public List<Job> GetActiveJobs()
     {
         var jobs = FindAllJobs()
-            .FindAll(j => j.Status == JobStatus.Accepted & j.IsActive); // Fetch all jobs as a list
+            .FindAll(j => j.IsActive); // Fetch all jobs as a list //TODO check if accepted
         return jobs;
     }
 

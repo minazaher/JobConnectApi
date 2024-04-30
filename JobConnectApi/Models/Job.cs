@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace JobConnectApi.Models;
 
@@ -38,6 +39,7 @@ public class Job
     public virtual List<JobSeeker>? Applicants { get; set; }
     
     // List of JobSeekers That Saved this job
+    [JsonIgnore]
     public virtual List<JobSeeker>? SavedBy { get; set; }
     
     // List of JobSeekers Of Proposals that have been submitted to this job 

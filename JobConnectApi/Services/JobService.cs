@@ -17,7 +17,7 @@ public class JobService(
     IDataRepository<Employer> employerRepository)
     : IJobService
 {
-    public async Task<ErrorOr<Created>> CreateJob(JobRequest j, string employerId)
+    public async Task<Job> CreateJob(JobRequest j, string employerId)
     {
         var user = await userManager.FindByIdAsync(employerId);
         if (user is Employer employer)
@@ -41,12 +41,11 @@ public class JobService(
             await jobRepository.AddAsync(job);
             bool saved = await jobRepository.Save();
             Console.WriteLine("is job saved:" + saved);
-            return saved ? Result.Created : Error.Failure();
+            return saved ? job : throw new Exception("Cannot save Job");
         }
 
-        Console.WriteLine("User Is Not Employer!" + user.ToString());
 
-        return Error.Unauthorized();
+        throw new UnauthorizedAccessException("You are not authorized to create jobs");
     }
 
     public async Task<Job> GetJobById(string id)
@@ -78,12 +77,12 @@ public class JobService(
         return jobs;
     }
 
-    public ErrorOr<List<Job>> FindByEmployerId(string employerId)
+    public List<Job> FindByEmployerId(string employerId)
     {
         var jobs = FindAllJobs()
-            .FindAll(j => j.EmployerId == employerId);
+            .FindAll(j => j.EmployerId == employerId).ToList();
 
-        return jobs.IsNullOrEmpty() ? Error.NotFound() : jobs;
+        return jobs.IsNullOrEmpty() ? throw new KeyNotFoundException() : jobs;
     }
 
     public List<Job> SearchJobsByTitle(string title)

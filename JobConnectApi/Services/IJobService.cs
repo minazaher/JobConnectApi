@@ -11,6 +11,6 @@ public interface IJobService
     List<Job> FindAllJobs();
     List<Job> GetJobsWaitingList();
     List<Job> GetActiveJobs();
-    Task<Job> FindByEmployerId(string employerId);
+    List<Job> FindByEmployerId(string employerId);
     List<Job> SearchJobsByTitle(string title);
 }

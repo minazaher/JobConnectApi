@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace JobConnectApi.Controllers.EmployerEndpoints;
 
 [ApiController]
-[Route("/jobs")]
+[Route("employer/jobs")]
 [Authorize(Roles = "Employer", AuthenticationSchemes = "Bearer")]
 public class JobManagementController(
     IJobService jobService)

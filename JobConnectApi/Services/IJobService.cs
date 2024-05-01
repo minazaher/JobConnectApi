@@ -6,11 +6,11 @@ namespace JobConnectApi.Services;
 
 public interface IJobService
 {
-    Task<ErrorOr<Created>> CreateJob(JobRequest jobRequest, string employerId);
+    Task<Job> CreateJob(JobRequest jobRequest, string employerId);
     Task<Job> GetJobById(string id);
     List<Job> FindAllJobs();
     List<Job> GetJobsWaitingList();
     List<Job> GetActiveJobs();
-    ErrorOr<List<Job>> FindByEmployerId(string employerId);
+    Task<Job> FindByEmployerId(string employerId);
     List<Job> SearchJobsByTitle(string title);
 }

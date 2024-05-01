@@ -17,7 +17,7 @@ namespace JobConnectApi.Controllers.JobSeekerEndpoints;
 [ApiController]
 [Authorize(Roles = "JobSeeker", AuthenticationSchemes = "Bearer")]
 [Route("/jobs")]
-public class JobManagementController(
+public class JobManagementController(    
     IJobService jobService,
     IMapper mapper,
     IJobSeekerService jobSeekerService) : ControllerBase

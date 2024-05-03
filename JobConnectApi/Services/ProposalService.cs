@@ -1,10 +1,11 @@
 using JobConnectApi.Controllers.JobSeekerEndpoints;
 using JobConnectApi.Database;
 using JobConnectApi.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace JobConnectApi.Services;
 
-public class ProposalService(IDataRepository<Proposal> dataRepository, IChatService chatService) : IProposalService
+public class ProposalService(IDataRepository<Proposal> dataRepository, IChatService chatService, DatabaseContext databaseContext) : IProposalService
 {
     public async Task<Proposal> SaveProposal(SubmitProposalDto proposalDto, String userId)
     {
@@ -75,7 +76,14 @@ public class ProposalService(IDataRepository<Proposal> dataRepository, IChatServ
     {
         var allProposals = await dataRepository.GetAllAsync();
         var result = allProposals.Where(p => p.JobId.Equals(jobId));
-        return result.ToList();
+        var response = await databaseContext.Proposals
+            .Include(p=>p.Job)
+            .Include(p=> p.JobSeeker)
+            .Where(u => u.JobId.Equals(jobId))
+            .ToListAsync();
+        Console.WriteLine("Reached this point ");
+    
+        return response;
     }
 
     public async Task<Proposal> UpdateProposalStatus(string proposalId, ProposalStatus status, string employerId)

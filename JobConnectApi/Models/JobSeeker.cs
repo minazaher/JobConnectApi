@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Identity;
 
 namespace JobConnectApi.Models;
@@ -13,6 +14,8 @@ public class JobSeeker: IdentityUser
     public virtual List<Job>? SavedJobs { get; set; }
     
     // List of Job proposals 
+    [Newtonsoft.Json.JsonIgnore]
+    [JsonIgnore]
     public virtual List<Proposal>? Proposals { get; set; }
     public virtual List<Chat>? Chats { get; set; }
 

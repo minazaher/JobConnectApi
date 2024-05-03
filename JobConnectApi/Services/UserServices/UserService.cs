@@ -30,7 +30,7 @@ public class UserService
         switch (registerRequest.Role)
         {
             case RoleAdmin:
-                user = new IdentityUser(); //TODO: To be replaced by Admin Model
+                user = new Admin(); //TODO: To be replaced by Admin Model
                 break;
             case RoleEmployer:
                 user = new Employer

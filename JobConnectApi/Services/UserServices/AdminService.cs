@@ -21,10 +21,15 @@ public class AdminService(
             job.Admin = admin;
             job.AdminId = adminId;
             job.Status = JobStatus.Accepted;
+            Console.WriteLine($"Job status is {job.Status}");
+            await dataRepository.UpdateAsync(job);
+            return await dataRepository.Save();
         }
-
-        await dataRepository.UpdateAsync(job);
-        return await dataRepository.Save();
+        else
+        {
+            Console.WriteLine("User is not admin");
+        }
+        return false;
     }
 
     public async Task<bool> SetJobRejectedBy(string jobId, string adminId)
@@ -35,9 +40,9 @@ public class AdminService(
         {
             job.Admin = admin;
             job.AdminId = adminId;
-            job.Status = JobStatus.Accepted;
+            job.Status = JobStatus.Rejected;
         }
-
+        Console.WriteLine($"Job is {job}");
         await dataRepository.UpdateAsync(job);
         return await dataRepository.Save();
     }

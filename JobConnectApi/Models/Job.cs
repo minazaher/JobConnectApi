@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 
 namespace JobConnectApi.Models;
 
@@ -32,7 +32,7 @@ public class Job
     public bool IsActive { get; set; }
     
     // This allows easier access to user information
-    [JsonIgnore]
+    [Newtonsoft.Json.JsonIgnore]
 
     public virtual Employer? Employer { get; set; }
     public virtual Admin? Admin { get; set; }  
@@ -41,10 +41,12 @@ public class Job
     public virtual List<JobSeeker>? Applicants { get; set; }
     
     // List of JobSeekers That Saved this job
-    [JsonIgnore]
+    [Newtonsoft.Json.JsonIgnore]
     public virtual List<JobSeeker>? SavedBy { get; set; }
     
     // List of JobSeekers Of Proposals that have been submitted to this job 
+    [Newtonsoft.Json.JsonIgnore]
+    [JsonIgnore]
     public virtual List<Proposal>? Proposals { get; set; }
 
 }

@@ -71,4 +71,11 @@ public class JobManagementController(
         var jobs = jobService.FindByEmployerId(employerIdClaim.Value);
         return Ok(jobs);
     }
+    
+    [HttpGet("{jobId}")]
+    public async Task<Job> GetJobDetails([FromRoute] string jobId)
+    {
+        Job job = await jobService.GetJobById(jobId);
+        return job;
+    }
 }

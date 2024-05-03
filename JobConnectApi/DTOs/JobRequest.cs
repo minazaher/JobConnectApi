@@ -10,4 +10,6 @@ public class JobRequest
     public decimal Salray { get; set; } // Budget can be nullable
     public DateTime PostDate { get; set; }
     public string JobDescription { get; set; }
+
+
 }

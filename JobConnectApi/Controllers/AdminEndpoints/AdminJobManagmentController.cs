@@ -24,7 +24,7 @@ public class g(IJobService jobService, IAdminService adminService, IMapper mappe
         var userId = User.Claims.FirstOrDefault()?.Value;
         if (userId != null)
         {
-            return await adminService.SetJobAcceptedBy(jobId, userId) ? Ok() : Problem("Failed to update Job status");
+            return await adminService.SetJobAcceptedBy(jobId, userId) ? Ok("Job Accepted Successfully") : Problem("Failed to update Job status");
         }
 
         return Unauthorized();
@@ -80,7 +80,7 @@ public class g(IJobService jobService, IAdminService adminService, IMapper mappe
             Job job = await jobService.GetJobById(jobId);
             var responseDto = mapper.Map<JobResponse>(job);
 
-            return Ok(responseDto);
+            return Ok(job);
         }
         catch (KeyNotFoundException ex)
         {

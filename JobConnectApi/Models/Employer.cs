@@ -14,6 +14,7 @@ public class Employer: IdentityUser
     [JsonIgnore]
     public virtual List<Job> PostedPosts { get; set; }
     
+    [JsonIgnore]
     public virtual List<Chat>? Chats { get; set; }
     
 }

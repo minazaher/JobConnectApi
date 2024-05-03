@@ -31,4 +31,37 @@ public class ChatController(IChatService chatService) : ControllerBase
 
         return Unauthorized("You Have to Login First");
     }
+
+    [HttpGet("job-seeker")]
+    public async Task<IActionResult> GetJobSeekerChats()
+    {
+        var userId = User.Claims.FirstOrDefault()?.Value;
+        if (userId != null)
+        {
+            List<Chat> chats = await chatService.GetChatsByJobSeekerId(userId);
+            return Ok(chats);
+        }
+
+        return Unauthorized();
+    }
+
+    [HttpGet("job-seeker/{chatId}")]
+    public async Task<IActionResult> GetJobSeekerChatWithMessages([FromRoute] string chatId)
+    {
+        var userId = User.Claims.FirstOrDefault()?.Value;
+        if (userId != null)
+        {
+            try
+            {
+                Chat chat = await chatService.GetJobSeekerChatWithMessages(chatId);
+                return Ok(chat);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound("Chat Not Found");
+            }
+        }
+
+        return Unauthorized();
+    }
 }

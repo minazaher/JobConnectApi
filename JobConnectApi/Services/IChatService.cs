@@ -9,6 +9,7 @@ public interface IChatService
     Task<bool> CreateChat(Chat chat);
     Task<bool> DeleteChat(string id);
     Task<Chat> GetChatById(string id);
-
+    Task<List<Chat>> GetChatsByJobSeekerId(string userId);
+    public Task<Chat> GetJobSeekerChatWithMessages(string chatId);
 
 }

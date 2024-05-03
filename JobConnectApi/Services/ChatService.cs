@@ -1,10 +1,11 @@
 using JobConnectApi.Database;
 using JobConnectApi.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 namespace JobConnectApi.Services;
 
-public class ChatService(IDataRepository<Chat> chatRepository, IDataRepository<Message> messageRepository)
+public class ChatService(IDataRepository<Chat> chatRepository, IDataRepository<Message> messageRepository, DatabaseContext databaseContext)
     : IChatService
 {
     public async Task<bool> CreateChat(Chat chat)
@@ -56,5 +57,24 @@ public class ChatService(IDataRepository<Chat> chatRepository, IDataRepository<M
         Chat chat = await chatRepository.GetByIdAsync(id);
         chat.Messages = await GetChatMessages(id);
         return chat;
+    }
+
+    public async Task<List<Chat>> GetChatsByJobSeekerId(string userId)
+    {
+        List<Chat> chats =  await databaseContext.Chats
+            .Include(c=>c.Messages)
+            .Include(c=> c.Employer)
+            .Where(c => c.JobSeekerId.Equals(userId)).ToListAsync();
+        return chats;
+    }
+
+    public async Task<Chat> GetJobSeekerChatWithMessages(string chatId)
+    {
+        Chat? chat =  await databaseContext.Chats
+            .Include(c=>c.Messages)
+            .Include(c=> c.Employer)
+            .Include(c=> c.JobSeeker)
+            .Where(c => c.Id.Equals(chatId)).FirstOrDefaultAsync();
+        return chat ?? throw new KeyNotFoundException("Chat Not Found");
     }
 }

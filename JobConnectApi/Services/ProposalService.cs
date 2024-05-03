@@ -5,7 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace JobConnectApi.Services;
 
-public class ProposalService(IDataRepository<Proposal> dataRepository, IChatService chatService, DatabaseContext databaseContext) : IProposalService
+public class ProposalService(
+    IDataRepository<Proposal> dataRepository,
+    IChatService chatService,
+    DatabaseContext databaseContext) : IProposalService
 {
     public async Task<Proposal> SaveProposal(SubmitProposalDto proposalDto, String userId)
     {
@@ -31,7 +34,7 @@ public class ProposalService(IDataRepository<Proposal> dataRepository, IChatServ
         Console.WriteLine("We reached this point!");
         return proposal;
     }
-    
+
     private async Task<string> UploadCv(IFormFile cv)
     {
         // Get file name and ensure it has a valid extension
@@ -77,12 +80,12 @@ public class ProposalService(IDataRepository<Proposal> dataRepository, IChatServ
         var allProposals = await dataRepository.GetAllAsync();
         var result = allProposals.Where(p => p.JobId.Equals(jobId));
         var response = await databaseContext.Proposals
-            .Include(p=>p.Job)
-            .Include(p=> p.JobSeeker)
+            .Include(p => p.Job)
+            .Include(p => p.JobSeeker)
             .Where(u => u.JobId.Equals(jobId))
             .ToListAsync();
         Console.WriteLine("Reached this point ");
-    
+
         return response;
     }
 
@@ -99,10 +102,21 @@ public class ProposalService(IDataRepository<Proposal> dataRepository, IChatServ
                 JobSeekerId = proposal.JobSeekerId,
                 EmployerId = employerId
             };
-           saved = saved && await chatService.CreateChat(chat);
+            saved = saved && await chatService.CreateChat(chat);
         }
-        return saved ? proposal : throw new KeyNotFoundException();
-    } 
- 
 
+        return saved ? proposal : throw new KeyNotFoundException();
+    }
+
+    public async Task<Proposal?> GetProposalById(string proposalId)
+    {
+        var proposal = await databaseContext.Proposals
+            .Include(p => p.JobSeeker)
+            .Where(u => u.ProposalId.Equals(proposalId))
+            .FirstOrDefaultAsync();
+        Console.WriteLine("Reached this point ");
+
+        return proposal ?? null;
+
+    }
 }

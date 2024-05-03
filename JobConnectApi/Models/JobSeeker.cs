@@ -17,6 +17,8 @@ public class JobSeeker: IdentityUser
     [Newtonsoft.Json.JsonIgnore]
     [JsonIgnore]
     public virtual List<Proposal>? Proposals { get; set; }
+    
+    [JsonIgnore]
     public virtual List<Chat>? Chats { get; set; }
 
     

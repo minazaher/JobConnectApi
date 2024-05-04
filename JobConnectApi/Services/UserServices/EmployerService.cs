@@ -70,4 +70,21 @@ public class EmployerService(IDataRepository<Employer?> employerRepository, User
         var isRemoved = await employerRepository.Save();
         return isRemoved;
     }
+
+    public async Task<bool> UpdateEmployer(string employerId, RegisterRequest registerRequest)
+    {
+        
+        var employer = await employerRepository.GetByIdAsync(employerId);
+        if (employer is { } emp)
+        {
+            emp.Industry = registerRequest.Industry;
+            emp.CompanyName = registerRequest.Company;
+            emp.UserName = registerRequest.UserName;
+            emp.Email = registerRequest.Email;
+            await employerRepository.UpdateAsync(emp);
+            await employerRepository.Save();
+            return true;
+        }
+        return false;
+    }
 }

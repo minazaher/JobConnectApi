@@ -75,4 +75,11 @@ public class AdminUserManagementController(IEmployerService employerService, IMa
         var isRemoved = await employerService.DeleteEmployerById(employerId);
         return isRemoved ? Ok("Employer Deleted") : Problem("Cannot delete the employer");
     }
+    
+    [HttpPut("{employerId}")]
+    public async Task<IActionResult> UpdateEmployer([FromRoute] string employerId,[FromBody] RegisterRequest registerRequest)
+    {
+        var isUpdated = await employerService.UpdateEmployer(employerId, registerRequest);
+        return isUpdated ? Ok("Employer Updated") : Problem("Cannot Update the employer");
+    }
 }

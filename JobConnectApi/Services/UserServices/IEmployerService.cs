@@ -11,4 +11,5 @@ public interface IEmployerService
     Task<ErrorOr<Created>> AddEmployer(RegisterRequest request);
     Task<bool> DeleteEmployerById(string id);
     // Task<List<Chat>> GetEmployerChats(string id);
+    Task<bool> UpdateEmployer(string employerId, RegisterRequest registerRequest);
 }

@@ -1,3 +1,4 @@
+using JobConnectApi.DTOs;
 using JobConnectApi.Models;
 using JobConnectApi.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -11,21 +12,21 @@ namespace JobConnectApi.Controllers;
 public class ChatController(IChatService chatService) : ControllerBase
 {
     [HttpPost("send")]
-    public async Task<IActionResult> SendMessage(string content, string receiverId,  string chatId)
+    public async Task<IActionResult> SendMessage([FromBody] MessageDto messageDto)
     {
         var userId = User.Claims.FirstOrDefault()?.Value;
         if (userId != null)
         {
             Message message = new Message
             {
-                ChatId = chatId,
-                Content = content,
-                SenderId = userId,
-                RecipientId = receiverId,
+                ChatId = messageDto.ChatId,
+                Content = messageDto.Content,
+                SenderName = messageDto.SenderName,
+                RecipientName = messageDto.RecipientName,
                 SentDate = DateTime.Now,
                 MessageId = Guid.NewGuid().ToString()
             };
-            var sent = await chatService.SendMessage(message, chatId);
+            var sent = await chatService.SendMessage(message, messageDto.ChatId);
             return sent ? Ok(message) : Problem("Message Not Sent");
         }
 

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace JobConnectApi.Services.UserServices;
 
-public class EmployerService(IDataRepository<Employer?> employerRepository, UserManager<IdentityUser> userManager)
+public class EmployerService(IDataRepository<Employer?> employerRepository, UserManager<IdentityUser> userManager, UserService userService )
     : IEmployerService
 {
     public async Task<Employer?> GetEmployerById(string id)
@@ -28,8 +28,10 @@ public class EmployerService(IDataRepository<Employer?> employerRepository, User
         return enumerableEmployers;
     }
 
-    public async Task<Employer?> AddEmployer(RegisterRequest registerRequest)
+    public async Task<ErrorOr<Created>>AddEmployer(RegisterRequest registerRequest)
     {
+        return await userService.Register(registerRequest);
+        /*
         var existingEmp = await userManager.FindByEmailAsync(registerRequest.Email);
         if (existingEmp == null)
         {
@@ -53,7 +55,7 @@ public class EmployerService(IDataRepository<Employer?> employerRepository, User
             return employer;
         }
 
-        throw new Exception("Internal Server Error, Employer Cannot Be Saved");
+        throw new Exception("Internal Server Error, Employer Cannot Be Saved")*/
     }
 
     public async Task<bool> DeleteEmployerById(string id)

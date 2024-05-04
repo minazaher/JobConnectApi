@@ -1,4 +1,5 @@
 using AutoMapper;
+using ErrorOr;
 using JobConnectApi.Database;
 using JobConnectApi.DTOs;
 using JobConnectApi.Models;
@@ -14,7 +15,7 @@ namespace JobConnectApi.Controllers.AdminEndpoints;
 [Route("admin/employers")]
 [ApiController]
 [Authorize(Roles = "Admin", AuthenticationSchemes = "Bearer")]
-public class AdminUserManagementController(IEmployerService employerService, IMapper mapper) : ControllerBase
+public class AdminUserManagementController(IEmployerService employerService, IMapper mapper, UserService userService) : ControllerBase
 {
     // GET /admin/employers: Get a list of all employers.
     [HttpGet]
@@ -53,17 +54,18 @@ public class AdminUserManagementController(IEmployerService employerService, IMa
 
     // POST /admin/employers: Create a new employer 
     [HttpPost]
-    public async Task<IActionResult> AddEmployer([FromBody] RegisterRequest registerRequest)
+    public async Task<ErrorOr<Created>> AddEmployer([FromBody] RegisterRequest registerRequest)
     {
-        try
-        {
-            Employer? employer = await employerService.AddEmployer(registerRequest);
-            return Ok(employer);
-        }
-        catch (Exception e)
-        {
-            return Problem(e.Message);
-        }
+        return await userService.Register(registerRequest);
+        // try
+        // {
+        //     var employer = await employerService.AddEmployer(registerRequest) == Result.Created;
+        //     return employer ? CreatedAtAction(actionName: nameof(AddEmployer), value: registerRequest) : Problem("error saving the employer");
+        // }
+        // catch (Exception e)
+        // {
+        //     return Problem(e.Message);
+        // }
     }
 
     // DELETE /admin/employers/{employerId}: Delete an employer.

@@ -49,19 +49,15 @@ public class ChatController(IChatService chatService) : ControllerBase
     public async Task<IActionResult> GetJobSeekerChatWithMessages([FromRoute] string chatId)
     {
         var userId = User.Claims.FirstOrDefault()?.Value;
-        if (userId != null)
+        if (userId == null) return Unauthorized();
+        try
         {
-            try
-            {
-                Chat chat = await chatService.GetJobSeekerChatWithMessages(chatId);
-                return Ok(chat);
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound("Chat Not Found");
-            }
+            Chat chat = await chatService.GetJobSeekerChatWithMessages(chatId);
+            return Ok(chat);
         }
-
-        return Unauthorized();
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound("Chat Not Found");
+        }
     }
 }

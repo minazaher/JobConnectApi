@@ -13,4 +13,6 @@ public interface IJobService
     List<Job> GetActiveJobs();
     List<Job> FindByEmployerId(string employerId);
     List<Job> SearchJobsByTitle(string title);
+    Task<bool> DeActivateJob(string jobId);
+
 }

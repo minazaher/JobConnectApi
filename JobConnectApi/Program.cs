@@ -57,6 +57,8 @@ var builder = WebApplication.CreateBuilder(args);
     {
         mc.AddProfile(new JobMappingProfile());
         mc.AddProfile(new EmployerMappingProfile());
+        mc.AddProfile(new ChatMappingProfile());
+        mc.AddProfile(new JobSeekerMappingProfile());
     });
 
     IMapper mapper = mapperConfig.CreateMapper();

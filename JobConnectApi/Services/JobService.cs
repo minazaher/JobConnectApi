@@ -73,7 +73,10 @@ public class JobService(
     public List<Job> GetActiveJobs()
     {
         var jobs = FindAllJobs()
-            .FindAll(j => j.IsActive); // Fetch all jobs as a list //TODO check if accepted
+            .FindAll(j => j is
+            {
+                IsActive: true, Status: JobStatus.Accepted
+            }); // Fetch all active jobs as a list //TODO check if accepted
         return jobs;
     }
 
@@ -89,5 +92,13 @@ public class JobService(
     {
         List<Job> jobs = FindAllJobs().FindAll(j => j.JobTitle.Normalize().Contains(title.Normalize())).ToList();
         return jobs.Count == 0 ? new List<Job>() : jobs;
+    }
+
+    public async Task<bool> DeActivateJob(string jobId)
+    {
+        Job job = await GetJobById(jobId);
+        job.IsActive = false;
+        await jobRepository.UpdateAsync(job);
+        return await jobRepository.Save();
     }
 }

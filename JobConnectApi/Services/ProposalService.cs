@@ -1,5 +1,6 @@
 using JobConnectApi.Controllers.JobSeekerEndpoints;
 using JobConnectApi.Database;
+using JobConnectApi.DTOs;
 using JobConnectApi.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,6 +9,7 @@ namespace JobConnectApi.Services;
 public class ProposalService(
     IDataRepository<Proposal> dataRepository,
     IChatService chatService,
+    IJobService jobService,
     DatabaseContext databaseContext) : IProposalService
 {
     public async Task<Proposal> SaveProposal(SubmitProposalDto proposalDto, String userId)
@@ -102,7 +104,7 @@ public class ProposalService(
                 JobSeekerId = proposal.JobSeekerId,
                 EmployerId = employerId
             };
-            saved = saved && await chatService.CreateChat(chat);
+            saved = saved && await chatService.CreateChat(chat) && await DeActivateJob(proposalId);
         }
 
         return saved ? proposal : throw new KeyNotFoundException();
@@ -117,6 +119,18 @@ public class ProposalService(
         Console.WriteLine("Reached this point ");
 
         return proposal ?? null;
+    }
 
+    private async Task<bool> DeActivateJob(string proposalId)
+    {
+        bool isSaved = false;
+        Proposal? proposal = await GetProposalById(proposalId);
+        if (proposal != null)
+        {
+            var jobId = proposal.JobId;
+            isSaved = await jobService.DeActivateJob(jobId);
+            return isSaved;
+        }
+        return isSaved;
     }
 }

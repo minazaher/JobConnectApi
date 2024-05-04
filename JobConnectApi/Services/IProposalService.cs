@@ -1,4 +1,5 @@
 using JobConnectApi.Controllers.JobSeekerEndpoints;
+using JobConnectApi.DTOs;
 using JobConnectApi.Models;
 
 namespace JobConnectApi.Services;

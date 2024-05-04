@@ -1,3 +1,4 @@
+using AutoMapper;
 using JobConnectApi.DTOs;
 using JobConnectApi.Models;
 using JobConnectApi.Services;
@@ -9,7 +10,7 @@ namespace JobConnectApi.Controllers;
 [ApiController]
 [Authorize(Roles = "JobSeeker, Employer", AuthenticationSchemes = "Bearer")]
 [Route("/chat")]
-public class ChatController(IChatService chatService) : ControllerBase
+public class ChatController(IChatService chatService, IMapper mapper) : ControllerBase
 {
     [HttpPost("send")]
     public async Task<IActionResult> SendMessage([FromBody] MessageDto messageDto)
@@ -40,7 +41,8 @@ public class ChatController(IChatService chatService) : ControllerBase
         if (userId != null)
         {
             List<Chat> chats = await chatService.GetChatsByJobSeekerId(userId);
-            return Ok(chats);
+            var responseDto = chats.Select(mapper.Map<ChatResponseDto>).ToList();
+            return Ok(responseDto);
         }
 
         return Unauthorized();
@@ -54,7 +56,8 @@ public class ChatController(IChatService chatService) : ControllerBase
         try
         {
             Chat chat = await chatService.GetJobSeekerChatWithMessages(chatId);
-            return Ok(chat);
+            var chatResponseDto = mapper.Map<ChatResponseDto>(chat);
+            return Ok(chatResponseDto);
         }
         catch (KeyNotFoundException ex)
         {

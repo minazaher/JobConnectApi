@@ -1,4 +1,4 @@
-namespace JobConnectApi.Models;
+namespace JobConnectApi.DTOs;
 
 public class SubmitProposalDto
 {

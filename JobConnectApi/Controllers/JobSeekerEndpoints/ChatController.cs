@@ -8,8 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace JobConnectApi.Controllers;
 
 [ApiController]
-[Authorize(Roles = "JobSeeker, Employer", AuthenticationSchemes = "Bearer")]
-[Route("/chat")]
+[Authorize(Roles = "JobSeeker", AuthenticationSchemes = "Bearer")]
+[Route("job-seeker/chat")]
 public class ChatController(IChatService chatService, IMapper mapper) : ControllerBase
 {
     [HttpPost("send")]
@@ -34,7 +34,7 @@ public class ChatController(IChatService chatService, IMapper mapper) : Controll
         return Unauthorized("You Have to Login First");
     }
 
-    [HttpGet("job-seeker")]
+    [HttpGet]
     public async Task<IActionResult> GetJobSeekerChats()
     {
         var userId = User.Claims.FirstOrDefault()?.Value;
@@ -48,7 +48,7 @@ public class ChatController(IChatService chatService, IMapper mapper) : Controll
         return Unauthorized();
     }
 
-    [HttpGet("job-seeker/{chatId}")]
+    [HttpGet("{chatId}")]
     public async Task<IActionResult> GetJobSeekerChatWithMessages([FromRoute] string chatId)
     {
         var userId = User.Claims.FirstOrDefault()?.Value;

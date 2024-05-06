@@ -11,5 +11,6 @@ public class JobRequest
     public DateTime PostDate { get; set; }
     public string JobDescription { get; set; }
 
-
+    public string Location { get; set; }
+    public string Industry { get; set; }
 }

@@ -33,6 +33,8 @@ public class JobService(
                 Status = JobStatus.Pending,
                 IsActive = true,
                 Employer = employer,
+                Industry = j.Industry,
+                Location = j.Location,
                 EmployerId = employerId,
                 AdminId = null,
                 Admin = null
@@ -76,7 +78,7 @@ public class JobService(
             .FindAll(j => j is
             {
                 IsActive: true, Status: JobStatus.Accepted
-            }); // Fetch all active jobs as a list //TODO check if accepted
+            }); 
         return jobs;
     }
 
@@ -90,7 +92,7 @@ public class JobService(
 
     public List<Job> SearchJobsByTitle(string title)
     {
-        List<Job> jobs = FindAllJobs().FindAll(j => j.JobTitle.Normalize().Contains(title.Normalize())).ToList();
+        List<Job> jobs = GetActiveJobs().FindAll(j => j.JobTitle.Normalize().Contains(title.Normalize())).ToList();
         return jobs.Count == 0 ? new List<Job>() : jobs;
     }
 

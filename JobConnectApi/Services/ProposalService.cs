@@ -116,8 +116,7 @@ public class ProposalService(
             .Include(p => p.JobSeeker)
             .Where(u => u.ProposalId.Equals(proposalId))
             .FirstOrDefaultAsync();
-        Console.WriteLine("Reached this point ");
-
+     
         return proposal ?? null;
     }
 
@@ -131,6 +130,7 @@ public class ProposalService(
             isSaved = await jobService.DeActivateJob(jobId);
             return isSaved;
         }
+
         return isSaved;
     }
 }

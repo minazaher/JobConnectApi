@@ -73,9 +73,10 @@ public class JobManagementController(
     }
     
     [HttpGet("{jobId}")]
-    public async Task<Job> GetJobDetails([FromRoute] string jobId)
+    public async Task<JobResponse> GetJobDetails([FromRoute] string jobId)
     {
         Job job = await jobService.GetJobById(jobId);
-        return job;
+        var eJobResponse = mapper.Map<JobResponse>(job);
+        return eJobResponse;
     }
 }

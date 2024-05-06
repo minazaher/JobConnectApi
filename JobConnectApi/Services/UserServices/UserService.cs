@@ -13,8 +13,8 @@ public class UserService
     private readonly DatabaseContext _database;
     private readonly IJwtService _jwtService;
     private readonly UserManager<IdentityUser> _userManager;
-    private const string RoleAdmin = "Admin";
-    private const string RoleEmployer = "Employer";
+    private const string RoleAdmin = "admin";
+    private const string RoleEmployer = "employer";
     private const string RoleJobSeeker = "jobseeker";
 
     public UserService(DatabaseContext database, IJwtService jwtService, UserManager<IdentityUser> userManager)

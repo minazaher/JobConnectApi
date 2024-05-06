@@ -67,6 +67,15 @@ public class ChatService(IDataRepository<Chat> chatRepository, IDataRepository<M
             .Where(c => c.JobSeekerId.Equals(userId)).ToListAsync();
         return chats;
     }
+    
+    public async Task<List<Chat>> GetChatsByEmployerId(string userId)
+    {
+        List<Chat> chats =  await databaseContext.Chats
+            .Include(c=>c.Messages)
+            .Include(c=> c.JobSeeker)
+            .Where(c => c.EmployerId.Equals(userId)).ToListAsync();
+        return chats;
+    }
 
     public async Task<Chat> GetJobSeekerChatWithMessages(string chatId)
     {

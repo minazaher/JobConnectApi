@@ -16,6 +16,9 @@ public class JobMappingProfile : Profile
             .ForMember(dest => dest.PostDate, opt => opt.MapFrom(src => src.PostDate))
             .ForMember(dest => dest.JobDescription, opt => opt.MapFrom(src => src.JobDescription))
             .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
+            .ForMember(dest => dest.Industry, opt => opt.MapFrom(src => src.Industry))
+            .ForMember(dest => dest.Location, opt => opt.MapFrom(src => src.Location))
+            .ForMember(dest => dest.EmployerDto, opt => opt.MapFrom(src => src.Employer))
             .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => src.IsActive));
     }
 }

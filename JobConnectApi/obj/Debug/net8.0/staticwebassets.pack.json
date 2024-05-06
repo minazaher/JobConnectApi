@@ -1,6 +1,10 @@
 {
   "Files": [
     {
+      "Id": "D:\\Projects\\.Net\\JobConnectApi\\JobConnectApi\\wwwroot\\uploads\\093003ac-4e38-4e44-a290-81c5cf8df248_JobSeeker1_Resume.pdf",
+      "PackagePath": "staticwebassets\\uploads\\093003ac-4e38-4e44-a290-81c5cf8df248_JobSeeker1_Resume.pdf"
+    },
+    {
       "Id": "D:\\Projects\\.Net\\JobConnectApi\\JobConnectApi\\wwwroot\\uploads\\0bb9d0d7-c550-4003-9d18-99fd1dd9f429_Sections.pdf",
       "PackagePath": "staticwebassets\\uploads\\0bb9d0d7-c550-4003-9d18-99fd1dd9f429_Sections.pdf"
     },

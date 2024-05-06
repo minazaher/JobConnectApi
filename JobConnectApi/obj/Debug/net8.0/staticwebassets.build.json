@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "WRN1u5FsMu2An8mkadKp+/S3CWj8va7N9uhgfxxWLV8=",
+  "Hash": "8SxKo1p8E+3qxl9yxH7l8MT8R62qyQuJw5ZEiyQuwvc=",
   "Source": "JobConnectApi",
   "BasePath": "_content/JobConnectApi",
   "Mode": "Default",
@@ -1155,6 +1155,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Users\\Lenovo\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\8.0.0\\staticwebassets\\V5\\lib\\jquery\\LICENSE.txt"
+    },
+    {
+      "Identity": "D:\\Projects\\.Net\\JobConnectApi\\JobConnectApi\\wwwroot\\uploads\\093003ac-4e38-4e44-a290-81c5cf8df248_JobSeeker1_Resume.pdf",
+      "SourceId": "JobConnectApi",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Projects\\.Net\\JobConnectApi\\JobConnectApi\\wwwroot\\",
+      "BasePath": "_content/JobConnectApi",
+      "RelativePath": "uploads/093003ac-4e38-4e44-a290-81c5cf8df248_JobSeeker1_Resume.pdf",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\093003ac-4e38-4e44-a290-81c5cf8df248_JobSeeker1_Resume.pdf"
     },
     {
       "Identity": "D:\\Projects\\.Net\\JobConnectApi\\JobConnectApi\\wwwroot\\uploads\\0bb9d0d7-c550-4003-9d18-99fd1dd9f429_Sections.pdf",

@@ -23,6 +23,11 @@ public class Job
     public DateTime PostDate { get; set; }
     [Column]
     public string JobDescription { get; set; }
+    
+    [Column]
+    public string Location { get; set; } 
+    [Column]
+    public string Industry { get; set; }
     [Column]
     public JobStatus Status { get; set; } = JobStatus.Pending; // Pending - Accepted
     [ForeignKey("AdminId")]

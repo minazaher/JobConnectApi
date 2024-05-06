@@ -11,7 +11,11 @@ public class JobResponse
     public decimal Salray { get; set; } // Budget can be nullable
     public DateTime PostDate { get; set; }
     public string JobDescription { get; set; }
+    public string Location { get; set; }
+    public string Industry { get; set; }
     public JobStatus Status { get; set; } = JobStatus.Pending; // Pending - Accepted
     public string? AdminId { get; set; } // fk referencing the admin that accepted the job post, (One to One relation)
     public bool IsActive { get; set; }
+
+    public EmployerDto EmployerDto { get; set; }
 }
